@@ -26,7 +26,7 @@ public class ClipboardListener extends Thread implements ClipboardOwner{
     public void run(){
         Transferable trans = systemClipboard.getContents(this);
         systemClipboard.setContents(trans, this);
-        System.out.println("CLIPBOARDLISTENER: Listening to clipboard");
+        System.out.println("CLIPBOARD LISTENER: Listening to clipboard");
         while(!turnOff){}
     }
 
