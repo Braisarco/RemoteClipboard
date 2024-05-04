@@ -1,1 +1,5 @@
-org\tfg\CustomTransferable.class
+es\uvigo\tfg\remoteClipboard\clipboardUtiles\ClipboardListener.class
+es\uvigo\tfg\remoteClipboard\clipboardUtiles\ClipboardModifier.class
+es\uvigo\tfg\remoteClipboard\clipboardUtiles\Subscriber.class
+es\uvigo\tfg\remoteClipboard\CustomTransferable.class
+es\uvigo\tfg\remoteClipboard\CustomClipboard.class

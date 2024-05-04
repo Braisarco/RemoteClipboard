@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<networks>
+    <networks name="red_1">
+        <users ip="000000"/>
+    </networks>
+    <networks name="red_2">
+        <users ip="111111"/>
+        <users ip="2"/>
+    </networks>
+</networks>
