@@ -1,19 +1,18 @@
 package es.uvigo.tfg.remoteClipboard.net;
 
+import es.uvigo.tfg.remoteClipboard.CustomClipboard;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement(name = "user")
 public class User {
-    @XmlAttribute
     private String ip;
-    @XmlAttribute(name = "username")
     private String username;
-    @XmlElement(name = "transferable")
-    private List<String> clipboardContent;
+    private CustomClipboard clipboard;
 
     public User() {
 
@@ -22,7 +21,7 @@ public class User {
     public User(String newIP, String name) {
         this.ip = newIP;
         this.username = name;
-        this.clipboardContent = new ArrayList<>();
+        this.clipboard = new CustomClipboard();
 
     }
 
@@ -34,17 +33,20 @@ public class User {
         return username;
     }
 
-    public List<String> getClipboardContent() {
-        return clipboardContent;
+    public void setUsername(String name){ this.username = name; }
+
+    public List<String> getClipboardStringContent() {
+        return clipboard.getClipboardContentString();
     }
 
-    public void addContent(String content) {
-        clipboardContent.add(content);
+    public void addContent(Transferable content) {
+        clipboard.addContent(content);
     }
 
-    public void setClipboardContent(List<String> newContent) {
-        this.clipboardContent = newContent;
+    public void setClipboardContent(List<Transferable> newContent) {
+        clipboard.setClipboardContent(newContent);
     }
+
 
     @Override
     public boolean equals(Object obj) {

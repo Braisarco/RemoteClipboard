@@ -1,12 +1,10 @@
 package es.uvigo.tfg.remoteClipboard.server;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-import es.uvigo.tfg.remoteClipboard.net.Network;
-import es.uvigo.tfg.remoteClipboard.net.NetworksManager;
 import es.uvigo.tfg.remoteClipboard.net.User;
 import es.uvigo.tfg.remoteClipboard.net.packet.Package;
 import es.uvigo.tfg.remoteClipboard.net.packet.PackageType;
-import es.uvigo.tfg.remoteClipboard.services.ClipboardManager;
+import es.uvigo.tfg.remoteClipboard.services.AppManager;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -17,21 +15,20 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ServiceThread extends Thread{
+public class ServiceThread extends Thread {
     private Socket clientSocket;
     private DataOutputStream output;
-    private ClipboardManager clipboardManager;
+    private AppManager manager;
 
-    private NetworksManager networksManager;
-
-    public ServiceThread(ClipboardManager manager, NetworksManager netManager) {
-        this.clipboardManager = manager;
-        this.networksManager = netManager;
+    public ServiceThread(AppManager manager) {
+        this.manager = manager;
     }
 
-    public ServiceThread(Socket newClientSocket){
+    public ServiceThread(Socket newClientSocket) {
         System.out.println("SERVICE THREAD: Creating new Service Thread");
         this.clientSocket = newClientSocket;
     }
@@ -51,15 +48,15 @@ public class ServiceThread extends Thread{
         }
     }
 
-    public void setSocket(Socket newClientSocket){
+    public void setSocket(Socket newClientSocket) {
         System.out.println("SERVICETHREAD: Assigning socket to thread");
         this.clientSocket = newClientSocket;
     }
 
 
-    public void sendContent(Transferable transferedObject){
+    public void sendContent(Transferable transferedObject) {
         Package pkg = new Package();
-        try{
+        try {
             CustomTransferable serializableTransferable = new CustomTransferable(transferedObject);
 
             pkg.setIp(InetAddress.getLocalHost().getHostAddress());
@@ -68,7 +65,7 @@ public class ServiceThread extends Thread{
             pkg.setCustomClipboardContent(new CustomTransferable(transferedObject));
 
             System.out.println("SERVICETHREAD: Sending content");
-            this.clipboardManager.addLocalContent(new CustomTransferable(transferedObject));
+            this.manager.addLocalContent(new CustomTransferable(transferedObject));
             output.writeUTF(pkg.serialize());
 
         } catch (Exception e) {
@@ -92,38 +89,41 @@ public class ServiceThread extends Thread{
     private void processEntranceRequest(Package pkg) {
         String[] info = new String(pkg.getInfo()).split("\\|");
         boolean accepted = false;
-        List<String> users = new ArrayList<>();
         String originIP = pkg.getIp();
         String userName = info[0];
         String netName = info[1];
 
-        for (Network net : networksManager.getNetworks()){
-            if(net.getName().equals(netName)){
-                net.addUser(new User(originIP, userName));
-                clipboardManager.createClipboard(originIP,userName);
-                users = net.getUsersNames();
-                accepted = true;
-                break;
-            }
+        if (manager.addRemoteUser(originIP, userName) && manager.addUserToNet(netName, userName)) {
+            accepted = true;
         }
-        if(accepted){
-            try{
+        if (accepted) {
+            try {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                Map<String, String> acceptanceInfo = new HashMap<>();
                 Package acceptanceResponse = new Package();
-                String acceptanceResponseInfo = "";
                 acceptanceResponse.setIp(InetAddress.getLocalHost().getHostAddress());
                 acceptanceResponse.setType(PackageType.ENTRANCE_ACCEPT);
 
-                for (String user : users){
-                    acceptanceResponseInfo += user + "|";
+                for (User user : manager.getNetUsers(netName)) {
+                    acceptanceInfo.put(user.getUsername(), user.getIp());
                 }
-                acceptanceResponse.setInfo(acceptanceResponseInfo.getBytes(StandardCharsets.UTF_8));
+
+                try(ObjectOutputStream objectOutput = new ObjectOutputStream(outputStream)){
+                    objectOutput.writeObject(acceptanceInfo);
+                    objectOutput.close();
+                }catch (Exception e){
+                    System.err.println("CUSTOMTRANSFERABLE: Error while serializing transferable");
+                    e.printStackTrace();
+                }
+
+                acceptanceResponse.setInfo(outputStream.toByteArray());
 
                 output.writeUTF(acceptanceResponse.serialize());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }else{
-            try{
+        } else {
+            try {
                 Package acceptanceResponse = new Package();
                 acceptanceResponse.setIp(InetAddress.getLocalHost().getHostAddress());
                 acceptanceResponse.setType(PackageType.ENTRANCE_DENNIED);

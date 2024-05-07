@@ -1,34 +1,29 @@
 package es.uvigo.tfg.remoteClipboard.client;
 
-import es.uvigo.tfg.remoteClipboard.net.Network;
-import es.uvigo.tfg.remoteClipboard.net.NetworksManager;
-import es.uvigo.tfg.remoteClipboard.net.User;
 import es.uvigo.tfg.remoteClipboard.net.packet.Package;
 import es.uvigo.tfg.remoteClipboard.net.packet.PackageType;
-import es.uvigo.tfg.remoteClipboard.services.ClipboardManager;
+import es.uvigo.tfg.remoteClipboard.services.AppManager;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 
 public class Client extends Thread {
     private String ip;
     private String userName;
     private String netName;
-    private ClipboardManager clipboardManager;
-    private NetworksManager networksManager;
+    private AppManager manager;
 
-    public Client(ClipboardManager manager,NetworksManager netManager, String ip, String userName, String netName) {
-        this.networksManager = netManager;
-        this.clipboardManager = manager;
+    public Client(AppManager manager, String ip, String userName, String netName) {
+        this.manager = manager;
         this.ip = ip;
         this.userName = userName;
         this.netName = netName;
@@ -69,16 +64,29 @@ public class Client extends Thread {
                 processEntranceAccept(pkg);
                 break;
             case TRANSFERABLE_CONTENT:
-                clipboardManager.addRemoteContent(getTransferable(pkg.getClipboardContent()), pkg.getIp());
+                manager.addContent(pkg.getIp(), getTransferable(pkg.getClipboardContent()));
                 break;
         }
     }
 
     private void processEntranceAccept(Package pkg){
-        System.out.println("Aceptaronme");
-        String[] netUsers = new String(pkg.getInfo()).split("\\|");
-        for(String user : netUsers){
-            System.out.println(user);
+        manager.createNetwork(netName);
+        Map<String, String> users = getUsersMap(pkg.getInfo());
+        users.forEach((name,userIp) ->{
+            if(!manager.existUser(name)){
+                manager.addRemoteUser(userIp,name);
+                manager.addUserToNet(netName,name);
+            }
+        });
+    }
+
+    private Map<String, String> getUsersMap(byte[] encodedUsers){
+        ByteArrayInputStream input = new ByteArrayInputStream(encodedUsers);
+        try(ObjectInputStream objectInput = new ObjectInputStream(input)){
+            return (Map<String, String>) objectInput.readObject();
+        }catch (Exception e){
+            System.err.println("Error while getting users");
+            return null;
         }
     }
 
@@ -106,10 +114,6 @@ public class Client extends Thread {
         return pkg;
     }
 
-    private void saveTransferable(Transferable content, String username) throws IOException, UnsupportedFlavorException {
-        clipboardManager.addRemoteContent(content, username);
-    }
-
     private void sendEntranceRequest(String userName, String netName, DataOutputStream output){
         Package pkg = new Package();
         try{
@@ -126,4 +130,3 @@ public class Client extends Thread {
         }
     }
 }
-

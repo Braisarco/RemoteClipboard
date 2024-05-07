@@ -1,6 +1,7 @@
 package es.uvigo.tfg.remoteClipboard.services.ui;
 
-import es.uvigo.tfg.remoteClipboard.services.ClipboardManager;
+
+import es.uvigo.tfg.remoteClipboard.services.AppManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,13 +15,12 @@ public class UIApplication extends JFrame implements ActionListener {
     private List<String> users;
     private int currentUserIndex;
     private HeaderComponent header;
-    private ClipboardManager clipboard;
+    private AppManager manager;
     private JButton leftArrow;
     private JButton rightArrow;
 
-    public UIApplication(ClipboardManager clipboards) {
-        this.clipboard = clipboards;
-        users = clipboard.getAllNames();
+    public UIApplication(AppManager manager) {
+        this.manager = manager;
         currentUserIndex = 0;
 
         //PREPARES WINDOW

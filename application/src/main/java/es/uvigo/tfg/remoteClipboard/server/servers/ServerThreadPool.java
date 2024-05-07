@@ -9,26 +9,23 @@ import java.util.List;
 
 import es.uvigo.tfg.remoteClipboard.clipboardUtiles.ClipboardListener;
 import es.uvigo.tfg.remoteClipboard.clipboardUtiles.Subscriber;
-import es.uvigo.tfg.remoteClipboard.net.NetworksManager;
-import es.uvigo.tfg.remoteClipboard.services.ClipboardManager;
+import es.uvigo.tfg.remoteClipboard.services.AppManager;
 import es.uvigo.tfg.remoteClipboard.server.Server;
 import es.uvigo.tfg.remoteClipboard.server.ServiceThread;
 
 public class ServerThreadPool extends Thread implements Server, Subscriber {
     private boolean active;
-    private ClipboardManager clipboardManager;
-    private NetworksManager networksManager;
+    private AppManager manager;
     private List<ServiceThread> threadPool = new ArrayList<>();
     private ClipboardListener cbListener = new ClipboardListener();
 
-    public ServerThreadPool(ClipboardManager manager, NetworksManager netManager){
-        this.networksManager = netManager;
-        this.clipboardManager = manager;
+    public ServerThreadPool(AppManager manager){
+        this.manager = manager;
         this.cbListener.subsribe(this);
         this.cbListener.start();
         this.active = true;
         for(int i = 0; i<50; i++){
-            this.threadPool.add(new ServiceThread(clipboardManager, networksManager));
+            this.threadPool.add(new ServiceThread(this.manager));
         }
     }
 
@@ -45,7 +42,6 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
                 for (ServiceThread thread: this.threadPool){
                     if (!thread.isAlive()){
                         System.out.println("SERVER: Thread avaliable");
-                        this.clipboardManager.createClipboard(InetAddress.getLocalHost().getHostName(), "name");
                         thread.setSocket(clientSocket);
                         thread.start();
                         break;

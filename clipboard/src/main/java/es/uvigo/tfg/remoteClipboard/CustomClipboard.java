@@ -1,31 +1,18 @@
 package es.uvigo.tfg.remoteClipboard;
 
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
 public class CustomClipboard {
     private List<Transferable> clipboardContent;
-    private String ip;
-    private String user;
 
-    public CustomClipboard(String ip, String user) {
-        this.ip = ip;
-        this.user = user;
+    public CustomClipboard() {
         this.clipboardContent = new ArrayList<>();
-    }
-
-    public String getIp() {
-        return this.ip;
-    }
-
-    public String getUser() {
-        return this.user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
     }
 
     public void setClipboardContent(List<Transferable> collection) {
@@ -36,15 +23,25 @@ public class CustomClipboard {
         return this.clipboardContent;
     }
 
+    public List<String> getClipboardContentString(){
+        List<String> result = new ArrayList<>();
+
+        for (Transferable transferable : clipboardContent){
+            if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)){
+                try {
+                    result.add((String)transferable.getTransferData(DataFlavor.stringFlavor));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                result.add("Unidentified transferable");
+            }
+        }
+
+        return result;
+    }
+
     public void addContent(Transferable newTransferable) {
         this.clipboardContent.add(newTransferable);
     }
-
-    public Byte[] getBytes(){
-        return this.getBytes();
-    }
-
-//    public List<Transferable> getContent(int amount){
-//
-//    }
 }
