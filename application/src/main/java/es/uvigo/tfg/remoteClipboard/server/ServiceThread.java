@@ -92,6 +92,7 @@ public class ServiceThread extends Thread {
         String originIP = pkg.getIp();
         String userName = info[0];
         String netName = info[1];
+        System.out.println(originIP+ "\n" +userName + "\n" + netName);
 
         if (manager.addRemoteUser(originIP, userName) && manager.addUserToNet(netName, userName)) {
             accepted = true;

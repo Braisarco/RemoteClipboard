@@ -23,9 +23,9 @@ public class AppManager {
     @XmlTransient
     private final String configurationFile = "./application/src/main/java/org/tfg/net/resources/netConfiguration.xml";
 
-    public AppManager() {
+    public AppManager(String userName) {
         try {
-            this.localUser = new User(InetAddress.getLocalHost().getHostAddress(),"");
+            this.localUser = new User(InetAddress.getLocalHost().getHostAddress(),userName);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }

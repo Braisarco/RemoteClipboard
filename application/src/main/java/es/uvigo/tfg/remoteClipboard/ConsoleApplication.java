@@ -12,18 +12,22 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class ConsoleApplication {
-    private AppManager manager = new AppManager();
-    private Server server = new ServerThreadPool(manager);
-    private ClientThreadPool clientPool = new ClientThreadPool(manager);
-    private boolean applicationOn = true;
+    private AppManager manager;
+    private Server server;
+    private ClientThreadPool clientPool;
+    private boolean applicationOn;
 
+    public ConsoleApplication(String username){
+        this.manager = new AppManager(username);
+        this.server = new ServerThreadPool(manager);
+        this.clientPool = new ClientThreadPool(manager);
+        this.applicationOn = true;
+    }
 
     public void inicializate() {
         server.start();
         clientPool.start();
         Scanner in = new Scanner(System.in);
-        System.out.println("Enter your username:");
-        manager.setLocalUserName(in.nextLine());
         while (applicationOn) {
             printAvaliableNetworks();
             showMainMenu();
