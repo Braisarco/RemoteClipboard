@@ -16,7 +16,7 @@ import java.util.*;
 
 @XmlRootElement(name = "networks")
 public class AppManager {
-    private User localUser;
+    private final User localUser;
     private List<User> remoteUsers;
     @XmlElement
     private Map<String, List<String>> nets;

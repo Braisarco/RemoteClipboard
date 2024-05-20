@@ -29,13 +29,26 @@ public class Client extends Thread {
         this.netName = netName;
     }
 
+    public Client(AppManager manager, String userName){
+        this.manager = manager;
+        this.userName = userName;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public void setNetName(String name) {
+        this.netName = name;
+    }
+
     @Override
     public void run() {
         System.out.println("CLIENT: Client running");
         try (Socket clientSocket = new Socket(ip, 10101)) {
             try (DataInputStream input = new DataInputStream(clientSocket.getInputStream());
-                DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())) {
-                sendEntranceRequest(userName, netName,output);
+                 DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())) {
+                sendEntranceRequest(userName, netName, output);
                 String line;
                 while (!(line = input.readUTF()).equals("</package>")) {
                     procesPackage(line);
@@ -69,22 +82,22 @@ public class Client extends Thread {
         }
     }
 
-    private void processEntranceAccept(Package pkg){
+    private void processEntranceAccept(Package pkg) {
         manager.createNetwork(netName);
         Map<String, String> users = getUsersMap(pkg.getInfo());
-        users.forEach((name,userIp) ->{
-            if(!manager.existUser(name)){
-                manager.addRemoteUser(userIp,name);
-                manager.addUserToNet(netName,name);
+        users.forEach((name, userIp) -> {
+            if (!manager.existUser(name)) {
+                manager.addRemoteUser(userIp, name);
             }
+            manager.addUserToNet(netName, name);
         });
     }
 
-    private Map<String, String> getUsersMap(byte[] encodedUsers){
+    private Map<String, String> getUsersMap(byte[] encodedUsers) {
         ByteArrayInputStream input = new ByteArrayInputStream(encodedUsers);
-        try(ObjectInputStream objectInput = new ObjectInputStream(input)){
+        try (ObjectInputStream objectInput = new ObjectInputStream(input)) {
             return (Map<String, String>) objectInput.readObject();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error while getting users");
             return null;
         }
@@ -114,9 +127,9 @@ public class Client extends Thread {
         return pkg;
     }
 
-    private void sendEntranceRequest(String userName, String netName, DataOutputStream output){
+    private void sendEntranceRequest(String userName, String netName, DataOutputStream output) {
         Package pkg = new Package();
-        try{
+        try {
             pkg.setIp(InetAddress.getLocalHost().getHostAddress());
             pkg.setType(PackageType.ENTRANCE_REQUEST);
             pkg.setInfo((userName + "|" + netName).getBytes(StandardCharsets.UTF_8));

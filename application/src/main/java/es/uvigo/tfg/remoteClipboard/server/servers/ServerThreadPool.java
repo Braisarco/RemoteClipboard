@@ -30,18 +30,16 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
     }
 
     /*
-     * Creates a thread pool and assignates 1 thread to each connection
+
+     * * Creates a thread pool and assignates 1 thread to each connection
      */
     @Override
     public void run(){
-        System.out.println("SERVER: Server running");
         try (ServerSocket serverSocket = new ServerSocket(10101)) {
             while (active) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("SERVER: Conexion detected");
                 for (ServiceThread thread: this.threadPool){
                     if (!thread.isAlive()){
-                        System.out.println("SERVER: Thread avaliable");
                         thread.setSocket(clientSocket);
                         thread.start();
                         break;

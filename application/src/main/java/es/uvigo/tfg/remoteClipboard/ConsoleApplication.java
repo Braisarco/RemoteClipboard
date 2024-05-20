@@ -1,6 +1,7 @@
 package es.uvigo.tfg.remoteClipboard;
 
 import es.uvigo.tfg.remoteClipboard.client.Client;
+import es.uvigo.tfg.remoteClipboard.client.ClientThreadPool;
 import es.uvigo.tfg.remoteClipboard.net.User;
 import es.uvigo.tfg.remoteClipboard.server.Server;
 import es.uvigo.tfg.remoteClipboard.server.servers.ServerThreadPool;
@@ -13,10 +14,13 @@ import java.util.Scanner;
 public class ConsoleApplication {
     private AppManager manager = new AppManager();
     private Server server = new ServerThreadPool(manager);
+    private ClientThreadPool clientPool = new ClientThreadPool(manager);
     private boolean applicationOn = true;
+
 
     public void inicializate() {
         server.start();
+        clientPool.start();
         Scanner in = new Scanner(System.in);
         System.out.println("Enter your username:");
         manager.setLocalUserName(in.nextLine());
@@ -35,15 +39,13 @@ public class ConsoleApplication {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    //net.addUser();
                     break;
                 case "3":
                     System.out.println("Write down the ip of a computer in the network:");
                     String netIP = in.nextLine();
                     System.out.println("write down the name of the network you want to join:");
                     //Client client = new Client(manager, netIP, manager.getLocalUserName(), in.nextLine());
-                    Client client = new Client(manager, netIP, "random", in.nextLine());
-                    client.start();
+                    clientPool.executeClient(netIP, in.nextLine());
                     break;
                 case "4":
                     applicationOn = false;
