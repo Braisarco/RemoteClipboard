@@ -28,12 +28,10 @@ public class ConsoleApplication {
         server.start();
         clientPool.start();
         Scanner in = new Scanner(System.in);
-        String option = "";
         while (applicationOn) {
             printAvaliableNetworks();
             showMainMenu();
-            option = in.nextLine();
-            switch (option) {
+            switch (in.nextLine()) {
                 case "1":
                     System.out.println("Which network do you want to look up?");
                     networkLookUp(in.nextLine());
