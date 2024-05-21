@@ -92,7 +92,7 @@ public class Package {
         clipboardContent = newClipboardContent;
     }
     public void setCustomClipboardContent(CustomTransferable cbcontent) {
-
+        this.clipboardContent = cbcontent.serialize();
     }
 
     public void setType(PackageType newType) {

@@ -57,8 +57,6 @@ public class ServiceThread extends Thread {
     public void sendContent(Transferable transferedObject) {
         Package pkg = new Package();
         try {
-            CustomTransferable serializableTransferable = new CustomTransferable(transferedObject);
-
             pkg.setIp(InetAddress.getLocalHost().getHostAddress());
             pkg.setType(PackageType.TRANSFERABLE_CONTENT);
             //pkg.setInfo();
@@ -92,7 +90,6 @@ public class ServiceThread extends Thread {
         String originIP = pkg.getIp();
         String userName = info[0];
         String netName = info[1];
-        System.out.println(originIP+ "\n" +userName + "\n" + netName);
 
         if (manager.addRemoteUser(originIP, userName) && manager.addUserToNet(netName, userName)) {
             accepted = true;
