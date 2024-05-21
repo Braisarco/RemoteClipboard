@@ -60,7 +60,6 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
     }
 
     public void broadCast(Transferable content){
-
         System.out.println("SERVER: Sending content to all servers");
         for (ServiceThread thread: this.threadPool){
             if (thread.isAlive()){
@@ -74,18 +73,4 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
         System.out.println("SERVER: New content recived, broadcasting...");
         broadCast(clipboardContent);
     }
-
-    /*
-    public void sendConnectionRequest(String ip){
-        try(Socket serverSocket = new Socket(ip, 10101)){
-            try(){
-
-            }catch(Exception e){
-
-            }
-        }catch(Exception e){
-            System.err.println("CLIENT: Error while creating socket in connection request");
-        }
-    }
-    */
 }

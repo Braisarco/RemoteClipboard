@@ -48,14 +48,20 @@ public class ConsoleApplication {
                     System.out.println("Write down the ip of a computer in the network:");
                     String netIP = in.nextLine();
                     System.out.println("write down the name of the network you want to join:");
-                    //Client client = new Client(manager, netIP, manager.getLocalUserName(), in.nextLine());
-                    clientPool.executeClient(netIP, in.nextLine());
+                    String netName = in.nextLine();
+                    clientPool.executeClient(netIP, netName);
                     break;
                 case "4":
+                    System.out.println("Write the name of the net that you want to eliminate:");
+                    String net = in.nextLine();
+                    manager.removeNetwork(net);
+                    break;
+                case "5":
                     applicationOn = false;
                     break;
                 default:
                     System.out.println("That is not an option honey <3");
+                    break;
             }
         }
         in.close();
@@ -71,7 +77,7 @@ public class ConsoleApplication {
     }
 
     private void showMainMenu() {
-        System.out.println("[1]CHOOSE NETWORK | [2]CREATE NETWORK | [3]JOIN NETWORK | [4]EXIT");
+        System.out.println("[1]CHOOSE NETWORK | [2]CREATE NETWORK | [3]JOIN NETWORK | [4]REMOVE NETWORK | [5]EXIT");
     }
 
     //Esta funcion vouna ter que sacar de aquí e darlle a responsabilida ao clipboardManager
@@ -83,13 +89,18 @@ public class ConsoleApplication {
                 for (String user : manager.getNetUsersNames(netName)) {
                     System.out.println("\t- " + user);
                 }
-                System.out.println("[1] LOOK UP USER | [2] LEAVE");
+                System.out.println("[1] LOOK UP USER | [2] REMOVE USER | [3] LEAVE");
                 switch (in.nextLine()) {
                     case "1":
                         System.out.println("Which user do you want to look up?");
                         userLookUp(in.nextLine());
                         break;
                     case "2":
+                        System.out.println("Which user do you want to remove?");
+                        String userName = in.nextLine();
+                        manager.removeUserFromNet(netName, userName);
+                        break;
+                    case "3":
                         active = false;
                         break;
                 }
