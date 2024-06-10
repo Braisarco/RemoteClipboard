@@ -56,7 +56,16 @@ public class AppManager {
     }
 
     public boolean existUser(String userName){
-        return remoteUsers.contains(userName);
+        if (localUser.getUsername().equals(userName)){
+            return true;
+        }else{
+            for (User user : remoteUsers){
+                if (user.getUsername().equals(userName)){
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public boolean deleteRemoteUser(String name) {
@@ -84,9 +93,13 @@ public class AppManager {
     }
 
     public List<String> getUserContent(String userName) {
-        for (User user : remoteUsers) {
-            if (user.getUsername().equals(userName)) {
-                return user.getClipboardStringContent();
+        if (localUser.getUsername().equals(userName)){
+            return localUser.getClipboardStringContent();
+        }else{
+            for (User user : remoteUsers) {
+                if (user.getUsername().equals(userName)) {
+                    return user.getClipboardStringContent();
+                }
             }
         }
         return null;
