@@ -55,7 +55,8 @@ public class AppManager {
 
         if(!existUser(auxiliarUser)){
             remoteUsers.add(auxiliarUser);
-        }else if (this.addUserToNet(ip , netName)){
+        }
+        if (this.addUserToNet(ip , netName)){
             done = true;
             this.createClientCommunication(ip, netName);
         }
