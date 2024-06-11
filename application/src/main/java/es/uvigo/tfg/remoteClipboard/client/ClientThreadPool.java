@@ -8,20 +8,20 @@ import java.util.List;
 public class ClientThreadPool extends Thread{
     private boolean active;
     private List<Client> clientPool = new ArrayList<>();
-    private AppManager manager;
 
-    public ClientThreadPool(AppManager manager){
-        this.manager = manager;
+    public ClientThreadPool(String userName){
+
         this.active = true;
         for(int i = 0; i <50; i++){
-            clientPool.add(new Client(this.manager,manager.getLocalUserName()));
+            clientPool.add(new Client(userName));
         }
     }
 
-    public void executeClient(String ip, String netName){
+    public void executeClient(String ip, String netName, AppManager manager){
         for (Client client : clientPool){
             if(!client.isAlive()){
                 client.setIp(ip);
+                client.setManager(manager);
                 client.setNetName(netName);
                 client.start();
                 break;

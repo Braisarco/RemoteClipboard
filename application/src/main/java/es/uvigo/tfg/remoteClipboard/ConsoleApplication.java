@@ -14,19 +14,16 @@ import java.util.Scanner;
 public class ConsoleApplication {
     private AppManager manager;
     private Server server;
-    private ClientThreadPool clientPool;
     private boolean applicationOn;
 
     public ConsoleApplication(String username){
-        this.manager = new AppManager(username);
+        this.manager = new AppManager(username, new ClientThreadPool(username));
         this.server = new ServerThreadPool(manager);
-        this.clientPool = new ClientThreadPool(manager);
         this.applicationOn = true;
     }
 
     public void inicializate() {
         server.start();
-        clientPool.start();
         Scanner in = new Scanner(System.in);
         while (applicationOn) {
             printAvaliableNetworks();
@@ -49,7 +46,7 @@ public class ConsoleApplication {
                     String netIP = in.nextLine();
                     System.out.println("write down the name of the network you want to join:");
                     String netName = in.nextLine();
-                    clientPool.executeClient(netIP, netName);
+                    manager.connectToNewNet(netIP, netName);
                     break;
                 case "4":
                     System.out.println("Write the name of the net that you want to eliminate:");
@@ -93,7 +90,7 @@ public class ConsoleApplication {
                 switch (in.nextLine()) {
                     case "1":
                         System.out.println("Which user do you want to look up?");
-                        userLookUp(in.nextLine());
+                        userLookUp(in.nextLine(), netName);
                         break;
                     case "2":
                         System.out.println("Which user do you want to remove?");
@@ -112,8 +109,8 @@ public class ConsoleApplication {
 
 
     //Esta funcion vouna ter que sacar de aquí e darlle a responsabilida ao clipboardManager
-    private void userLookUp(String userName) {
-        if(manager.existUser(userName)){
+    private void userLookUp(String userName, String netName) {
+        if(manager.getNetUsersNames(netName).contains(userName)){
             System.out.println("Content:");
             for(String content : manager.getUserContent(userName)){
                 System.out.println("\t-" + content);

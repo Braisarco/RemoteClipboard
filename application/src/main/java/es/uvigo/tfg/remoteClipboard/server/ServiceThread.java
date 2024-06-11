@@ -91,7 +91,8 @@ public class ServiceThread extends Thread {
         String userName = info[0];
         String netName = info[1];
 
-        if (manager.addRemoteUser(originIP, userName) && manager.addUserToNet(netName, userName)) {
+        if (manager.addRemoteUser(originIP, userName, netName)) {
+            //Here we could make the user decide if he/she accepts the new user or not
             accepted = true;
         }
         if (accepted) {

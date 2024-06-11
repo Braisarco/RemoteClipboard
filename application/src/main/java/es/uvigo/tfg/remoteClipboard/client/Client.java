@@ -29,9 +29,12 @@ public class Client extends Thread {
         this.netName = netName;
     }
 
-    public Client(AppManager manager, String userName){
-        this.manager = manager;
+    public Client(String userName){
         this.userName = userName;
+    }
+
+    public void setManager(AppManager appManager){
+        this.manager = appManager;
     }
 
     public void setIp(String ip) {
@@ -83,13 +86,11 @@ public class Client extends Thread {
     }
 
     private void processEntranceAccept(Package pkg) {
+        //Esto tería que crear un servidor que se conectase co cliente do outro directamente
         manager.createNetwork(netName);
         Map<String, String> users = getUsersMap(pkg.getInfo());
         users.forEach((name, userIp) -> {
-            if (!manager.existUser(name)) {
-                manager.addRemoteUser(userIp, name);
-            }
-            manager.addUserToNet(netName, name);
+            manager.addRemoteUser(userIp, name, netName);
         });
     }
 

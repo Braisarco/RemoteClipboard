@@ -1,5 +1,6 @@
 package es.uvigo.tfg.remoteClipboard.services;
 
+import es.uvigo.tfg.remoteClipboard.client.ClientThreadPool;
 import es.uvigo.tfg.remoteClipboard.net.User;
 
 import javax.xml.bind.JAXBContext;
@@ -22,13 +23,16 @@ public class AppManager {
     private Map<String, List<String>> nets;
     @XmlTransient
     private final String configurationFile = "./application/src/main/java/org/tfg/net/resources/netConfiguration.xml";
+    private ClientThreadPool clientPool;
 
-    public AppManager(String userName) {
+    public AppManager(String userName, ClientThreadPool clientTP) {
         try {
             this.localUser = new User(InetAddress.getLocalHost().getHostAddress(),userName);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
+        this.clientPool = clientTP;
+        this.clientPool.start();
         this.remoteUsers = new ArrayList<>();
         this.nets = new HashMap<>();
     }
@@ -41,26 +45,47 @@ public class AppManager {
         this.localUser.setUsername(name);
     }
 
-    public boolean addRemoteUser(String ip, String username) {
-        for (User user : remoteUsers) {
-            if (user.getUsername().equals(username) && user.getIp().equals(ip)) {
-                System.err.println("MANAGER: The user already exists");
-                return false;
-            } else if (user.getUsername().equals(username)) {
-                System.err.println("MANAGER: The user nick name already exists");
-                return false;
-            }
-        }
-        remoteUsers.add(new User(ip, username));
-        return true;
+    public void connectToNewNet(String ip, String netName){
+        this.clientPool.executeClient(ip, netName, this);
     }
 
-    public boolean existUser(String userName){
-        if (localUser.getUsername().equals(userName)){
+    public boolean addRemoteUser(String ip, String username, String netName) {
+        boolean done = false;
+        User auxiliarUser = new User(ip,username);
+
+        if(!existUser(auxiliarUser)){
+            remoteUsers.add(auxiliarUser);
+        }else if (this.addUserToNet(ip , netName)){
+            done = true;
+            this.createClientCommunication(ip, netName);
+        }
+        return done;
+    }
+
+    private void createClientCommunication(String ip, String netName){
+        this.clientPool.executeClient(ip, netName, this);
+    }
+
+    private boolean addUserToNet(String netName, String userName) {
+        if (nets.containsKey(netName)) {
+            if (!nets.get(netName).contains(userName)) {
+                nets.get(netName).add(userName);
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean existUser(User newUser){
+        if (localUser.getUsername().equals(newUser.getUsername())){
             return true;
         }else{
             for (User user : remoteUsers){
-                if (user.getUsername().equals(userName)){
+                if (user.getUsername().equals(newUser.getUsername())){
+                    return true;
+                } else if (user.getIp().equals(user.getIp())) {
                     return true;
                 }
             }
@@ -152,18 +177,6 @@ public class AppManager {
         List<User> result = new ArrayList<>(remoteUsers);
         result.add(localUser);
         return result;
-    }
-
-    public boolean addUserToNet(String netName, String userName) {
-        if (nets.containsKey(netName)) {
-            if (!nets.get(netName).contains(userName)) {
-                nets.get(netName).add(userName);
-                return true;
-            }
-            return false;
-        } else {
-            return false;
-        }
     }
 
     public boolean existsNet(String netName){
