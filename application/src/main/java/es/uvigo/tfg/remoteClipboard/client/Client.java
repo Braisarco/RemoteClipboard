@@ -60,16 +60,15 @@ public class Client extends Thread {
                     procesPackage(line);
                 }
             } catch (EOFException e) {
-                System.out.print("CLIENTE: ");
-                e.printStackTrace();
+                manager.deleteRemoteUser(ip);
+                System.err.println("CLIENT: Client gone");
             } catch (Exception e) {
-                System.err.println("CLIENT: Error while creating the ObjectInputStream");
-                e.printStackTrace();
-
+                manager.deleteRemoteUser(ip);
+                System.err.println("CLIENT: Client gone");
             }
         } catch (Exception e) {
-            System.err.println("CLIENTE: Error while creating Socket in client");
-            e.printStackTrace();
+            manager.deleteRemoteUser(ip);
+            System.err.println("CLIENT: Client gone");
         }
     }
 

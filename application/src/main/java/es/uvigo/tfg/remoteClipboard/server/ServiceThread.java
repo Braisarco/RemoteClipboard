@@ -43,8 +43,7 @@ public class ServiceThread extends Thread {
                 procesPackage(line);
             }
         } catch (Exception e) {
-            System.err.println("Error getting the client socket");
-            e.printStackTrace();
+            System.err.println("Thread gone");
         }
     }
 
