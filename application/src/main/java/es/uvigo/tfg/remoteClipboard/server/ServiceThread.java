@@ -43,6 +43,11 @@ public class ServiceThread extends Thread {
                 procesPackage(line);
             }
         } catch (Exception e) {
+            try{
+                this.join();
+            }catch (InterruptedException ie){
+                ie.printStackTrace();
+            }
             System.err.println("Thread gone");
         }
     }
