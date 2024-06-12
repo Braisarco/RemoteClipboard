@@ -23,7 +23,6 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
         this.manager = manager;
         this.cbListener.subsribe(this);
         this.cbListener.start();
-        this.active = true;
         for(int i = 0; i<50; i++){
             this.threadPool.add(new ServiceThread(this.manager));
         }
@@ -36,7 +35,6 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
     @Override
     public void run(){
         try (ServerSocket serverSocket = new ServerSocket(10101)) {
-            while (active) {
                 Socket clientSocket = serverSocket.accept();
                 for (ServiceThread thread: this.threadPool){
                     if (!thread.isAlive()){
@@ -45,7 +43,6 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
                         break;
                     }
                 }
-            }
         } catch (Exception e) {
             System.err.println("Error creating server socket");
             e.printStackTrace();
@@ -55,8 +52,15 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
     /*
      * Turns the server off
      */
-    public void turnOff(){
-        this.active = false;
+    public void shutDown(){
+        for(ServiceThread thread : this.threadPool){
+            try{
+                thread.join();
+            }catch (InterruptedException e){
+                System.err.println("SERVER: Error while shutting down");
+                e.printStackTrace();
+            }
+        }
     }
 
     public void broadCast(Transferable content){

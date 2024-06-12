@@ -6,6 +6,7 @@ import es.uvigo.tfg.remoteClipboard.services.AppManager;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.bind.Unmarshaller;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
@@ -82,6 +83,11 @@ public class Client extends Thread {
             case TRANSFERABLE_CONTENT:
                 manager.addContent(pkg.getIp(), getTransferable(pkg.getClipboardContent()));
                 break;
+            case DISCONNECT:
+                processDisconnection(pkg);
+                break;
+            default:
+                System.out.println("That package has not yet been prepared");
         }
     }
 
@@ -92,6 +98,10 @@ public class Client extends Thread {
         users.forEach((name, userIp) -> {
             manager.addRemoteUser(userIp, name, netName);
         });
+    }
+
+    private void processDisconnection(Package pkg){
+        manager.deleteRemoteUser(pkg.getIp());
     }
 
     private Map<String, String> getUsersMap(byte[] encodedUsers) {

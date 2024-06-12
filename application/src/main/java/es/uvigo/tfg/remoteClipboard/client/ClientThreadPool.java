@@ -2,6 +2,7 @@ package es.uvigo.tfg.remoteClipboard.client;
 
 import es.uvigo.tfg.remoteClipboard.services.AppManager;
 
+import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,17 @@ public class ClientThreadPool extends Thread{
                 client.setNetName(netName);
                 client.start();
                 break;
+            }
+        }
+    }
+
+    public void shutdown(){
+        for(Client client : clientPool){
+            try{
+                client.join();
+            }catch(InterruptedException e){
+                System.err.println("CLIENTPOOL: Error while shutting down");
+                e.printStackTrace();
             }
         }
     }

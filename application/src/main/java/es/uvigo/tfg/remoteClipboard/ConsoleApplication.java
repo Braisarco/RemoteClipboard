@@ -54,6 +54,8 @@ public class ConsoleApplication {
                     manager.removeNetwork(net);
                     break;
                 case "5":
+                    this.server.shutDown();
+                    this.manager.shutDownClients();
                     applicationOn = false;
                     break;
                 default:
@@ -93,11 +95,6 @@ public class ConsoleApplication {
                         userLookUp(in.nextLine(), netName);
                         break;
                     case "2":
-                        System.out.println("Which user do you want to remove?");
-                        String userName = in.nextLine();
-                        manager.removeUserFromNet(netName, userName);
-                        break;
-                    case "3":
                         active = false;
                         break;
                 }

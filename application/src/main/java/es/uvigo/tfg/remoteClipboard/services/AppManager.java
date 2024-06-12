@@ -56,7 +56,7 @@ public class AppManager {
         if(!existUser(auxiliarUser)){
             remoteUsers.add(auxiliarUser);
         }
-        if (this.addUserToNet(netName , username)){
+        if (this.addUserToNet(netName ,username)){
             done = true;
             this.createClientCommunication(ip, netName);
         }
@@ -73,10 +73,8 @@ public class AppManager {
                 nets.get(netName).add(userName);
                 return true;
             }
-            return false;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public boolean existUser(User newUser){
@@ -94,14 +92,15 @@ public class AppManager {
         }
     }
 
-    public boolean deleteRemoteUser(String name) {
-        if (remoteUsers.contains(name)) {
-            remoteUsers.remove(name);
-            return true;
-        } else {
-            System.err.println("MANAGER: The user does not exist so it can't be removed");
-            return false;
+    public boolean deleteRemoteUser(String ip) {
+        for(User user : this.remoteUsers){
+            if (user.getIp().equals(ip)){
+                this.removeUserFromNetworks(user.getUsername());
+                this.remoteUsers.remove(user);
+                return true;
+            }
         }
+        return false;
     }
 
     public boolean addContent(String ip, Transferable clipboardContent) {
@@ -184,13 +183,14 @@ public class AppManager {
         return nets.containsKey(netName);
     }
 
-    public boolean removeUserFromNet(String netName, String userName) {
-        if (nets.containsKey(netName) && nets.get(netName).contains(userName)) {
-            nets.get(netName).remove(userName);
-            //Aqui qudaría eliminar o usuario en caso de que non pertenezca a ningunha outra rede
-            return true;
-        }
-        return false;
+    private void removeUserFromNetworks(String userName) {
+        this.nets.forEach((net, users)->{
+            users.remove(userName);
+        });
+    }
+
+    public void shutDownClients(){
+        this.clientPool.shutdown();
     }
 
     public void save() {

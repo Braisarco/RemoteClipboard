@@ -5,7 +5,9 @@ public enum PackageType {
     ENTRANCE_ACCEPT(101),
     ENTRANCE_DENNIED(102),
     TRANSFERABLE_CONTENT(200),
-    REMOVE(300);
+    REMOVE(300),
+    DISCONNECT(400);
+
 
     int type;
 

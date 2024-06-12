@@ -53,6 +53,18 @@ public class ServiceThread extends Thread {
         this.clientSocket = newClientSocket;
     }
 
+    public void sendDisconectionPackage(){
+        Package pkg = new Package();
+        try{
+            pkg.setIp(InetAddress.getLocalHost().getHostAddress());
+            pkg.setType(PackageType.DISCONNECT);
+        } catch (Exception e) {
+            System.err.println("SERVERTHREAD: Error while creating disconnection package");
+            e.printStackTrace();
+
+        }
+    }
+
 
     public void sendContent(Transferable transferedObject) {
         Package pkg = new Package();
@@ -69,6 +81,7 @@ public class ServiceThread extends Thread {
         } catch (Exception e) {
             System.err.println("SERVERTHREAD: Error while sending content");
             e.printStackTrace();
+
         }
     }
 
