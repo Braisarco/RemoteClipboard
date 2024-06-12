@@ -67,6 +67,7 @@ public class ServerThreadPool extends Thread implements Server, Subscriber {
         System.out.println("SERVER: Sending content to all servers");
         for (ServiceThread thread: this.threadPool){
             if (thread.isAlive()){
+                thread.sendDisconectionPackage();
                 thread.sendContent(content);
             }
         }

@@ -88,7 +88,7 @@ public class ConsoleApplication {
                 for (String user : manager.getNetUsersNames(netName)) {
                     System.out.println("\t- " + user);
                 }
-                System.out.println("[1] LOOK UP USER | [2] REMOVE USER | [3] LEAVE");
+                System.out.println("[1] LOOK UP USER | [2] LEAVE");
                 switch (in.nextLine()) {
                     case "1":
                         System.out.println("Which user do you want to look up?");
