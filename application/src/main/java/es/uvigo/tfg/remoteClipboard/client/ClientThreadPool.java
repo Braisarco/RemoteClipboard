@@ -23,7 +23,7 @@ public class ClientThreadPool extends Thread{
             if(!client.isAlive()){
                 client.setIp(ip);
                 client.setManager(manager);
-                client.setNetName(netName);
+                client.setNetName("");
                 client.start();
                 break;
             }

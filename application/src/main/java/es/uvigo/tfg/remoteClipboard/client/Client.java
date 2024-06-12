@@ -52,7 +52,9 @@ public class Client extends Thread {
         try (Socket clientSocket = new Socket(ip, 10101)) {
             try (DataInputStream input = new DataInputStream(clientSocket.getInputStream());
                  DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())) {
-                sendEntranceRequest(userName, netName, output);
+                if (!this.netName.isEmpty()){
+                    sendEntranceRequest(userName, netName, output);
+                }
                 String line;
                 while (!(line = input.readUTF()).equals("</package>")) {
                     procesPackage(line);
