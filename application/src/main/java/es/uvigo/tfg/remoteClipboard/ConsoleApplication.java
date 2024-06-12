@@ -57,14 +57,14 @@ public class ConsoleApplication {
                     this.server.shutDown();
                     this.manager.shutDownClients();
                     applicationOn = false;
+                    in.close();
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("That is not an option honey <3");
                     break;
             }
         }
-        in.close();
-
     }
 
     //Esta funcion vouna ter que sacar de aquí e darlle a responsabilida ao clipboardManager

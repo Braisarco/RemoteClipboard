@@ -58,7 +58,7 @@ public class AppManager {
         }
         if (this.addUserToNet(netName ,username)){
             done = true;
-            this.createClientCommunication(ip, netName);
+            this.createClientCommunication(ip, "");
         }
         return done;
     }
