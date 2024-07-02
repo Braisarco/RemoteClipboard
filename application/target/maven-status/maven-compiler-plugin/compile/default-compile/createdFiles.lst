@@ -1,3 +1,10 @@
+org\tfg\client\Client.class
+org\tfg\services\ClipboardManager.class
+org\tfg\server\ServiceThread.class
+org\tfg\Application.class
+org\tfg\server\servers\ServerExecutorService.class
+org\tfg\server\Server.class
+org\tfg\server\servers\ServerThreadPool.class
 es\uvigo\tfg\remoteClipboard\services\ClipboardManager.class
 es\uvigo\tfg\remoteClipboard\server\servers\ServerThreadPool.class
 es\uvigo\tfg\remoteClipboard\client\Client.class
