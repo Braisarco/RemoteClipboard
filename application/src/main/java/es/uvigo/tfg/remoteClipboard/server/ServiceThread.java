@@ -43,7 +43,7 @@ public class ServiceThread extends Thread {
       DataInputStream input = new DataInputStream(socket.getInputStream());
       String line;
       while (!(line = input.readUTF()).equals("</package>")) {
-        procesPackage(line);
+        processPackage(line);
       }
     } catch (Exception e) {
       try {
@@ -91,7 +91,7 @@ public class ServiceThread extends Thread {
     }
   }
 
-  private void procesPackage(String serializedPkg) throws IOException, UnsupportedFlavorException {
+  private void processPackage(String serializedPkg) throws IOException, UnsupportedFlavorException {
     Package pkg = deSerializePackage(serializedPkg);
     switch (pkg.getType()) {
     // De momento para salir do paso faremos que se acepten todas as peticions

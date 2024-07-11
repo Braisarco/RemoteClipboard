@@ -64,7 +64,7 @@ public class Client extends Thread {
         }
         String line;
         while (!(line = input.readUTF()).equals("</package>")) {
-          procesPackage(line);
+          processPackage(line);
         }
       } catch (EOFException e) {
         manager.deleteRemoteUser(ip);
@@ -79,7 +79,7 @@ public class Client extends Thread {
     }
   }
 
-  private void procesPackage(String serializedPkg) throws IOException, UnsupportedFlavorException {
+  private void processPackage(String serializedPkg) throws IOException, UnsupportedFlavorException {
     Package pkg = deSerializePackage(serializedPkg);
     switch (pkg.getType()) {
     // De momento para salir do paso faremos que se acepten todas as peticions
