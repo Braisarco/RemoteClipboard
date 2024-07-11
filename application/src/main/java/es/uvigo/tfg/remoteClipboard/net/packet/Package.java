@@ -40,73 +40,71 @@ import java.io.StringWriter;
 @XmlRootElement(name = "package")
 public class Package {
 
-    private String ip;
+  private String ip;
 
-    private PackageType type;
+  private PackageType type;
 
-    private byte[] info;
+  private byte[] info;
 
-    private byte[] clipboardContent;
+  private byte[] clipboardContent;
 
-    public Package() {
+  public Package() {
 
+  }
+
+  public String serialize() {
+    StringWriter swriter = new StringWriter();
+    try {
+      JAXBContext context = JAXBContext.newInstance(this.getClass());
+      Marshaller marshaller = context.createMarshaller();
+
+      marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+      marshaller.marshal(this, swriter);
+    } catch (JAXBException e) {
+      System.err.println("PACKAGE_SERIALIZER: Error while serializing package");
+      e.printStackTrace();
     }
+    return swriter.getBuffer().toString();
+  }
 
-    public String serialize() {
-        StringWriter swriter = new StringWriter();
-        try {
-            JAXBContext context = JAXBContext.newInstance(this.getClass());
-            Marshaller marshaller = context.createMarshaller();
+  @XmlAttribute(name = "ip_origin")
+  public String getIp() {
+    return ip;
+  }
 
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(this, swriter);
-        } catch (JAXBException e) {
-            System.err.println("PACKAGE_SERIALIZER: Error while serializing package");
-            e.printStackTrace();
-        }
-        return swriter.getBuffer().toString();
-    }
+  @XmlElement(name = "content")
+  public byte[] getInfo() {
+    return info;
+  }
 
-    @XmlAttribute(name = "ip_origin")
-    public String getIp() {
-        return ip;
-    }
+  @XmlAttribute(name = "package_type")
+  public PackageType getType() {
+    return type;
+  }
 
-    @XmlElement(name = "content")
-    public byte[] getInfo() {
-        return info;
-    }
+  @XmlElement(name = "transferable")
+  public byte[] getClipboardContent() {
+    return clipboardContent;
+  }
 
+  public void setClipboardContent(byte[] newClipboardContent) {
+    clipboardContent = newClipboardContent;
+  }
 
-    @XmlAttribute(name = "package_type")
-    public PackageType getType() {
-        return type;
-    }
+  public void setCustomClipboardContent(CustomTransferable cbcontent) {
+    this.clipboardContent = cbcontent.serialize();
+  }
 
-    @XmlElement(name = "transferable")
-    public byte[] getClipboardContent() {
-        return clipboardContent;
-    }
+  public void setType(PackageType newType) {
+    this.type = newType;
+  }
 
-    public void setClipboardContent(byte[] newClipboardContent){
-        clipboardContent = newClipboardContent;
-    }
-    public void setCustomClipboardContent(CustomTransferable cbcontent) {
-        this.clipboardContent = cbcontent.serialize();
-    }
+  public void setInfo(byte[] newContent) {
+    this.info = newContent;
+  }
 
-    public void setType(PackageType newType) {
-        this.type = newType;
-    }
-
-
-    public void setInfo(byte[] newContent) {
-        this.info = newContent;
-    }
-
-
-    public void setIp(String newIP) {
-        this.ip = newIP;
-    }
+  public void setIp(String newIP) {
+    this.ip = newIP;
+  }
 
 }
