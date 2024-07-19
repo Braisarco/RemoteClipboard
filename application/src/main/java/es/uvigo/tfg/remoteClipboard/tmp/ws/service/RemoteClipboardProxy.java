@@ -1,15 +1,17 @@
-package es.uvigo.tfg.remoteClipboard.tmp;
+package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
+import es.uvigo.tfg.remoteClipboard.CustomTransferable;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
+
+import java.awt.datatransfer.Transferable;
 import java.util.List;
 
 public class RemoteClipboardProxy implements RemoteClipboardSEI {
-  private final String wsdl;
-  private final String serviceName;
   private RemoteClipboardSEI remoteClipboard;
   
-  public RemoteClipboardProxy(String wsdl, String serviceName) {
-    this.wsdl = wsdl;
-    this.serviceName = serviceName;
+  public RemoteClipboardProxy(RemoteClipboardSEI rc) {
+    this.remoteClipboard = rc;
   }
 
   @Override
@@ -19,7 +21,7 @@ public class RemoteClipboardProxy implements RemoteClipboardSEI {
         if (this.remoteClipboard == null) {
           this.remoteClipboard = null;// Service.create(this.wsdl, this.serviceName);
         }
-        
+
         return this.remoteClipboard.register(user, wsdl, networks);
       } catch (Exception e) {
         try {
@@ -29,8 +31,22 @@ public class RemoteClipboardProxy implements RemoteClipboardSEI {
         }
       }
     }
-    
     throw new RuntimeException("Error stablishing connection");
+  }
+
+  @Override
+  public boolean addContent(String user, Transferable content) {
+    return remoteClipboard.addContent(user, content);
+  }
+
+  @Override
+  public boolean removeUser(String user) {
+    return remoteClipboard.removeUser(user);
+  }
+
+  @Override
+  public List<User> getRemoteUsers(List<String> nets) {
+    return remoteClipboard.getRemoteUsers(nets);
   }
 
 }

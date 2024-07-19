@@ -1,4 +1,4 @@
-package es.uvigo.tfg.remoteClipboard.tmp;
+package es.uvigo.tfg.remoteClipboard.tmp.exp;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -49,7 +49,6 @@ public class Experiment implements ClipboardOwner {
     }
 
     this.executor.execute(() -> {
-      // Cambiar propietario
       clipboard.setContents(contents, this);
     });
   }
