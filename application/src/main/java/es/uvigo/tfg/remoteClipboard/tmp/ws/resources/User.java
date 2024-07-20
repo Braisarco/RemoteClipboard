@@ -4,6 +4,7 @@ import es.uvigo.tfg.remoteClipboard.CustomClipboard;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 
 import java.awt.datatransfer.Transferable;
+import java.util.List;
 
 public class User {
     private String username;
@@ -32,5 +33,9 @@ public class User {
             System.err.println(e.getMessage());
             return false;
         }
+    }
+
+    public List<String> getContentStr(){
+        return this.clipboard.getClipboardContentString();
     }
 }

@@ -9,12 +9,11 @@ import javax.jws.soap.SOAPBinding;
 import java.awt.datatransfer.Transferable;
 import java.util.List;
 
-@WebService(name = "RemoreClipboard")
-@SOAPBinding(style = SOAPBinding.Style.RPC)
+@WebService(name = "RemoteClipboard")
+//@SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface RemoteClipboardSEI {
   @WebMethod
-  public boolean register(String user, String wsdl, List<String> networks);
-
+  public boolean register(String user, String wsdl, List<String> nets);
   @WebMethod
   public boolean addContent(String user, Transferable content);
 
