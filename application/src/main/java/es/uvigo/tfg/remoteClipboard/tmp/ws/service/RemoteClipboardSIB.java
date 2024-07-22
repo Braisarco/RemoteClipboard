@@ -15,17 +15,11 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   private User localUser;
   private List<User> remoteUsers;
   private Map<String, List<String>> nets;
-  private List<RemoteClipboardSEI> remoteServices;
 
   public RemoteClipboardSIB(){
     this.localUser = new User("localUser", "wsdl");
     this.remoteUsers = new ArrayList<>();
     this.nets = new HashMap<>();
-    this.remoteServices = new ArrayList<>();
-  }
-
-  public List<RemoteClipboardSEI> getRemoteServices(){
-    return this.remoteServices;
   }
 
   public String getLocalUsername(){
