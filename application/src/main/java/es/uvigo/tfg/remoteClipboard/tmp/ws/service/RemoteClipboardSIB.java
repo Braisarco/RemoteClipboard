@@ -1,9 +1,8 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
+import jakarta.jws.WebService;
 
-import javax.jws.WebService;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.HashMap;

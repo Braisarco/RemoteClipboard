@@ -3,9 +3,9 @@ package es.uvigo.tfg.remoteClipboard.tmp.ws.client;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
+import jakarta.xml.ws.Service;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;

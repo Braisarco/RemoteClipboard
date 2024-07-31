@@ -2,10 +2,9 @@ package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebService;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import java.awt.datatransfer.Transferable;
 import java.util.List;
 
