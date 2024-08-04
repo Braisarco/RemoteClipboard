@@ -1,9 +1,12 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
+import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
-import jakarta.jws.WebService;
 
+import javax.jws.WebService;
 import java.awt.datatransfer.Transferable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +18,13 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   private List<User> remoteUsers;
   private Map<String, List<String>> nets;
 
-  public RemoteClipboardSIB(){
-    this.localUser = new User("localUser", "wsdl");
+  public RemoteClipboardSIB() {
+    try{
+      this.localUser = new User("eu", "http://" +
+              InetAddress.getLocalHost().getHostAddress() +":1010/remoteClipboard?wsdl");
+    }catch(UnknownHostException e){
+      e.printStackTrace();
+    }
     this.remoteUsers = new ArrayList<>();
     this.nets = new HashMap<>();
   }
@@ -25,7 +33,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     return this.localUser.getUsername();
   }
 
-  public boolean addLocalContent(Transferable content){
+  public boolean addLocalContent(CustomTransferable content){
     return this.localUser.addContent(content);
   }
 
@@ -93,7 +101,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   private int userAlreadyExists(String username){
     int userExists = -1;
     for (User user : this.remoteUsers){
-      if (user.getUsername().equals(user)){
+      if (user.getUsername().equals(user.getUsername())){
         userExists = this.remoteUsers.indexOf(user);
         break;
       }
@@ -134,7 +142,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   }
 
   @Override
-  public boolean addContent(String username, Transferable content){
+  public boolean addContent(String username, CustomTransferable content){
     boolean contentAdded = false;
     int userIndex = this.userAlreadyExists(username);
     if (userIndex != -1){

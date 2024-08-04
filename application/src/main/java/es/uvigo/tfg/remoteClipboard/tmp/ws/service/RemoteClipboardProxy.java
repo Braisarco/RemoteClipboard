@@ -2,27 +2,40 @@ package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
 
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
 import java.awt.datatransfer.Transferable;
+import java.net.URL;
 import java.util.List;
 
-public class RemoteClipboardProxy implements RemoteClipboardSEI {
+public class RemoteClipboardProxy {
   private RemoteClipboardSEI remoteClipboard;
+  private String username;
+  private String wsdl;
+  private List<String> networks;
   
-  public RemoteClipboardProxy(RemoteClipboardSEI rc) {
-    this.remoteClipboard = rc;
+  public RemoteClipboardProxy(String user, String wsdl, List<String> nets) {
+    this.remoteClipboard = new RemoteClipboardSIB();
+    this.username = user;
+    this.wsdl = wsdl;
+    this.networks = nets;
   }
 
-  @Override
-  public boolean register(String user, String wsdl, List<String> networks) {
+  public boolean register() {
     for (int attempts = 0; attempts < 3; attempts++) {
       try {
         if (this.remoteClipboard == null) {
-          this.remoteClipboard = null;// Service.create(this.wsdl, this.serviceName);
+          URL url = new URL(this.wsdl);
+          QName name = new QName(
+                  "http://es.uvigo.tfg.remoteClipboard.tmp.ws.service/",
+                  "RemoteClipboard");
+
+          Service service = Service.create(url, name);
+          this.remoteClipboard = service.getPort(RemoteClipboardSEI.class);
         }
 
-        return this.remoteClipboard.register(user, wsdl, networks);
+        return this.remoteClipboard.register(this.username, this.wsdl, this.networks);
       } catch (Exception e) {
         try {
           Thread.sleep(1000);
@@ -34,19 +47,15 @@ public class RemoteClipboardProxy implements RemoteClipboardSEI {
     throw new RuntimeException("Error stablishing connection");
   }
 
-  @Override
-  public boolean addContent(String user, Transferable content) {
-    return remoteClipboard.addContent(user, content);
+  public boolean addContent(CustomTransferable content){
+    return this.remoteClipboard.addContent(this.username, content);
   }
 
-  @Override
-  public boolean removeUser(String user) {
-    return remoteClipboard.removeUser(user);
+  public boolean removeUser(String user){
+    return this.remoteClipboard.removeUser(user);
   }
 
-  @Override
-  public List<User> getRemoteUsers(List<String> nets) {
-    return remoteClipboard.getRemoteUsers(nets);
+  public List<User> getRemoteUsers(List<String> nets){
+    return this.remoteClipboard.getRemoteUsers(nets);
   }
-
 }

@@ -2,41 +2,33 @@ package es.uvigo.tfg.remoteClipboard.tmp.ws.client;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
-import jakarta.xml.ws.Service;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardProxy;
 
-import javax.xml.namespace.QName;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class RemoteClipboardClient implements ClipboardOwner {
-    private List<RemoteClipboardSEI> remoteServices;
+    private List<RemoteClipboardProxy> remoteServices;
     private Executor executor;
+    private String user;
 
-    public RemoteClipboardClient(){
+    public RemoteClipboardClient(String username){
+        this.user = username;
         this.remoteServices = new ArrayList<>();
         this.executor = Executors.newFixedThreadPool(50);
     }
 
     public List<User> connect(String wsdl, List<String> nets) throws MalformedURLException {
-        URL url = new URL(wsdl);
-        QName name = new QName(
-                "http://es.uvigo.tfg.remoteClipboard.tmp.ws.service/",
-                "RemoteClipboard");
-
-        Service service = Service.create(url, name);
-        RemoteClipboardSEI clipboardService = service.getPort(RemoteClipboardSEI.class);
-
-        if (clipboardService.register("me", "wsdl", nets)){
+        RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(this.user, wsdl,nets);
+        if (clipboardService.register()){
             this.remoteServices.add(clipboardService);
             List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
             addAllRemoteServices(remoteUsers, nets);
@@ -46,17 +38,10 @@ public class RemoteClipboardClient implements ClipboardOwner {
         return null;
     }
 
-    private void addAllRemoteServices(List<User> users, List<String> nets) throws MalformedURLException {
-        URL url = null;
-        QName name = new QName(
-                "http://es.uvigo.tfg.remoteClipboard.tmp.ws.service/",
-                "RemoteClipboard");
+    private void addAllRemoteServices(List<User> users, List<String> nets){
         for (User user : users){
-            url = new URL(user.getWsdl());
-            Service service = Service.create(url, name);
-            RemoteClipboardSEI clipboardService = service.getPort(RemoteClipboardSEI.class);
-
-            if(clipboardService.register("me", "wsdl", nets)){
+            RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(user.getUsername(), user.getWsdl(), nets);
+            if(clipboardService.register()){
                 this.remoteServices.add(clipboardService);
             }
         }
@@ -67,8 +52,8 @@ public class RemoteClipboardClient implements ClipboardOwner {
         try {
             CustomTransferable transferable = new CustomTransferable(contents);
 
-            for (RemoteClipboardSEI service : this.remoteServices) {
-                this.executor.execute(() -> service.addContent("EU", transferable));
+            for (RemoteClipboardProxy service : this.remoteServices) {
+                this.executor.execute(() -> service.addContent(transferable));
             }
         } catch (UnsupportedFlavorException e) {
             e.printStackTrace();

@@ -38,4 +38,19 @@ public class User {
     public List<String> getContentStr(){
         return this.clipboard.getClipboardContentString();
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean equal = false;
+        if (obj instanceof User && this.username.equals(((User) obj).getUsername())){
+            equal = true;
+        }
+        return equal;
+    }
 }
+

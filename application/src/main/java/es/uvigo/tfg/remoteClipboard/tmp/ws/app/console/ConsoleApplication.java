@@ -14,7 +14,7 @@ public class ConsoleApplication {
     public ConsoleApplication(RemoteClipboardSIB clipboard){
         shutOff = false;
         this.clipboard = clipboard;
-        this.server = new RemoteClipboardServer();
+        this.server = new RemoteClipboardServer(this.clipboard);
     }
 
     public void init(){
@@ -31,7 +31,7 @@ public class ConsoleApplication {
                 case "2":
                     try {
                         System.out.println("How do you want to call the network?");
-                        //manager.createNetwork(in.nextLine());
+                        this.clipboard.createNet(in.nextLine());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
