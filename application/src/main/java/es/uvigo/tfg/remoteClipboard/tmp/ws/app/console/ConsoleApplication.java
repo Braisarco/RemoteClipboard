@@ -1,20 +1,31 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.app.console;
 
+import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.server.RemoteClipboardServer;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSIB;
 
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ConsoleApplication {
     private boolean shutOff;
     private RemoteClipboardSIB clipboard;
     private RemoteClipboardServer server;
+    private RemoteClipboardClient client;
 
     public ConsoleApplication(RemoteClipboardSIB clipboard){
-        shutOff = false;
-        this.clipboard = clipboard;
-        this.server = new RemoteClipboardServer(this.clipboard);
+        try{
+            shutOff = false;
+            this.client = new RemoteClipboardClient(InetAddress.getLocalHost().getHostName());
+            this.clipboard = clipboard;
+            this.server = new RemoteClipboardServer(this.clipboard);
+        }catch(UnknownHostException e){
+            e.printStackTrace();
+        }
     }
 
     public void init(){
@@ -41,7 +52,12 @@ public class ConsoleApplication {
                     String netIP = in.nextLine();
                     System.out.println("write down the name of the network you want to join:");
                     String netName = in.nextLine();
-                    //manager.connectToNewNet(netIP, netName);
+
+                    try{
+                        client.connect("http://"+ netIP + ":1010/RemoteClipboard?wsdl", Arrays.stream(netName.split("/")).toList());
+                    }catch(MalformedURLException e){
+                        e.printStackTrace();
+                    }
                     break;
                 case "4":
                     System.out.println("Write the name of the net that you want to eliminate:");
