@@ -16,7 +16,7 @@ public class RemoteClipboardProxy {
   private List<String> networks;
   
   public RemoteClipboardProxy(String user, String wsdl, List<String> nets) {
-    this.remoteClipboard = new RemoteClipboardSIB();
+    this.remoteClipboard = null;
     this.username = user;
     this.wsdl = wsdl;
     this.networks = nets;
@@ -28,7 +28,7 @@ public class RemoteClipboardProxy {
         if (this.remoteClipboard == null) {
           URL url = new URL(this.wsdl);
           QName name = new QName(
-                  "http://es.uvigo.tfg.remoteClipboard.tmp.ws.service/",
+                  "http://service.ws.tmp.remoteClipboard.tfg.uvigo.es/",
                   "RemoteClipboard");
 
           Service service = Service.create(url, name);
