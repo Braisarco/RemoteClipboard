@@ -29,7 +29,7 @@ public class RemoteClipboardProxy {
           URL url = new URL(this.wsdl);
           QName name = new QName(
                   "http://service.ws.tmp.remoteClipboard.tfg.uvigo.es/",
-                  "RemoteClipboard");
+                  "RemoteClipboardSIBService");
 
           Service service = Service.create(url, name);
           this.remoteClipboard = service.getPort(RemoteClipboardSEI.class);
