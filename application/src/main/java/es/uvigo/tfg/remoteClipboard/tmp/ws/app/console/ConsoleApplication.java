@@ -54,7 +54,7 @@ public class ConsoleApplication {
                     String netName = in.nextLine();
 
                     try{
-                        client.connect("http://"+ netIP + ":1010/RemoteClipboard?wsdl", Arrays.stream(netName.split("/")).toList());
+                        client.connect("http://"+ netIP + ":1010/remoteClipboard?wsdl", Arrays.stream(netName.split("/")).toList());
                     }catch(MalformedURLException e){
                         e.printStackTrace();
                     }
