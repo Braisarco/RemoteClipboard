@@ -58,7 +58,8 @@ public class ConsoleApplication {
 
                     try{
                         this.clipboard.addSeveralNets(nets);
-                        for(User user : client.connect("http://"+ netIP + ":1010/remoteClipboard?wsdl", nets)){
+                        List<User> remoteUsers = client.connect("http://"+ netIP + ":1010/remoteClipboard?wsdl", nets);
+                        for(User user : remoteUsers){
                             this.clipboard.register(user.getUsername(), user.getWsdl(), user.getNets());
                         }
                     }catch(MalformedURLException e){
