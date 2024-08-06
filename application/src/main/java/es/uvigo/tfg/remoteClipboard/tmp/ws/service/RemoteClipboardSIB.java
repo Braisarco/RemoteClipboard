@@ -45,6 +45,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
       for (String net : nets){
         if (this.nets.containsKey(net)){
           if (!this.remoteUsers.contains(auxiliarUser)){
+            auxiliarUser.addNet(net);
             this.remoteUsers.add(auxiliarUser);
             userAdded = true;
           }
@@ -115,6 +116,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     if (!this.nets.containsKey(netName)){
       emptyUsers.add(this.localUser.getUsername());
       this.nets.put(netName, emptyUsers);
+      this.localUser.addNet(netName);
       netCreated = true;
     }
     return netCreated;
