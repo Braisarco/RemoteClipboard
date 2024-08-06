@@ -5,6 +5,7 @@ import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 public class User {
     private String username;
     private String wsdl;
+    @XmlElement
     private List<String> nets;
     private CustomClipboard clipboard;
 
