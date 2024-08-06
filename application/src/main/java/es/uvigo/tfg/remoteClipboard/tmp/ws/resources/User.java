@@ -3,10 +3,20 @@ package es.uvigo.tfg.remoteClipboard.tmp.ws.resources;
 import es.uvigo.tfg.remoteClipboard.CustomClipboard;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "User", propOrder = {
+        "username",
+        "wsdl",
+        "nets",
+        "clipboard"
+})
 public class User {
     private String username;
     private String wsdl;
