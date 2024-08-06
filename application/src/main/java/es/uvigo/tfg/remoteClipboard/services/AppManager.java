@@ -104,20 +104,20 @@ public class AppManager {
     }
     return false;
   }
-
-  public boolean addContent(String ip, Transferable clipboardContent) {
-    for (User user : remoteUsers) {
-      if (user.getIp().equals(ip)) {
-        user.addContent(clipboardContent);
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public void addLocalContent(Transferable clipboardContent) {
-    this.localUser.addContent(clipboardContent);
-  }
+//
+//  public boolean addContent(String ip, Transferable clipboardContent) {
+//    for (User user : remoteUsers) {
+//      if (user.getIp().equals(ip)) {
+//        user.addContent(clipboardContent);
+//        return true;
+//      }
+//    }
+//    return false;
+//  }
+//
+//  public void addLocalContent(Transferable clipboardContent) {
+//    this.localUser.addContent(clipboardContent);
+//  }
 
   public List<String> getUserContent(String userName) {
     if (localUser.getUsername().equals(userName)) {

@@ -42,7 +42,7 @@ public class User {
 
     public boolean addContent(Transferable content){
         try{
-            this.clipboard.addContent(content);
+            this.clipboard.addContent(new CustomTransferable(content));
             return true;
         }catch(Exception e){
             System.err.println(e.getMessage());

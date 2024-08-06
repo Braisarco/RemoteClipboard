@@ -81,7 +81,7 @@ public class ServiceThread extends Thread {
       pkg.setCustomClipboardContent(new CustomTransferable(transferedObject));
 
       System.out.println("SERVICETHREAD: Sending content");
-      this.manager.addLocalContent(new CustomTransferable(transferedObject));
+     // this.manager.addLocalContent(new CustomTransferable(transferedObject));
       output.writeUTF(pkg.serialize());
 
     } catch (Exception e) {

@@ -37,13 +37,13 @@ public class User {
     return clipboard.getClipboardContentString();
   }
 
-  public void addContent(Transferable content) {
-    clipboard.addContent(content);
-  }
-
-  public void setClipboardContent(List<Transferable> newContent) {
-    clipboard.setClipboardContent(newContent);
-  }
+//  public void addContent(Transferable content) {
+//    clipboard.addContent(content);
+//  }
+//
+//  public void setClipboardContent(List<Transferable> newContent) {
+//    clipboard.setClipboardContent(newContent);
+//  }
 
   @Override
   public boolean equals(Object obj) {

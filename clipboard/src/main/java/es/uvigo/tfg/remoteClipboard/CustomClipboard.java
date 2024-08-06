@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomClipboard {
-  private List<Transferable> clipboardContent;
+  private List<CustomTransferable> clipboardContent;
 
   public CustomClipboard() {
     this.clipboardContent = new ArrayList<>();
   }
 
-  public void setClipboardContent(List<Transferable> collection) {
+  public void setClipboardContent(List<CustomTransferable> collection) {
     this.clipboardContent = collection;
   }
 
-  public List<Transferable> getClipboardContent() {
+  public List<CustomTransferable> getClipboardContent() {
     return this.clipboardContent;
   }
 
@@ -38,7 +38,7 @@ public class CustomClipboard {
     return result;
   }
 
-  public void addContent(Transferable newTransferable) {
+  public void addContent(CustomTransferable newTransferable) {
     this.clipboardContent.add(newTransferable);
   }
 }

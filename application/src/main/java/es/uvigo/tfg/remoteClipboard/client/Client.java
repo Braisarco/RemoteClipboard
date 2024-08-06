@@ -88,9 +88,9 @@ public class Client extends Thread {
     case ENTRANCE_ACCEPT:
       processEntranceAccept(pkg);
       break;
-    case TRANSFERABLE_CONTENT:
-      manager.addContent(pkg.getIp(), getTransferable(pkg.getClipboardContent()));
-      break;
+//    case TRANSFERABLE_CONTENT:
+//      manager.addContent(pkg.getIp(), getTransferable(pkg.getClipboardContent()));
+//      break;
     case DISCONNECT:
       processDisconnection(pkg);
       break;
