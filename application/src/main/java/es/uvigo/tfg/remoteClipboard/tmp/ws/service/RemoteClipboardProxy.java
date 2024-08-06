@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import java.awt.datatransfer.Transferable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RemoteClipboardProxy {

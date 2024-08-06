@@ -4,11 +4,13 @@ import es.uvigo.tfg.remoteClipboard.CustomClipboard;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 
 import java.awt.datatransfer.Transferable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
     private String username;
     private String wsdl;
+    private List<String> nets;
     private CustomClipboard clipboard;
 
     public User(){}
@@ -16,6 +18,7 @@ public class User {
     public User(String name, String wsdl){
         this.username = name;
         this.wsdl = wsdl;
+        this.nets = new ArrayList<>();
         this.clipboard = new CustomClipboard();
     }
 
@@ -35,6 +38,18 @@ public class User {
             System.err.println(e.getMessage());
             return false;
         }
+    }
+
+    public void addNet(String net){
+        this.nets.add(net);
+    }
+
+    public void removeNet(String net){
+        this.nets.remove(net);
+    }
+
+    public List<String> getNets(){
+        return this.nets;
     }
 
     public List<String> getContentStr(){

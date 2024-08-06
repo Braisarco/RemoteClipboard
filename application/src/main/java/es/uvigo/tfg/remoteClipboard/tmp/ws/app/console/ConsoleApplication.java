@@ -1,6 +1,7 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.app.console;
 
 import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.server.RemoteClipboardServer;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSIB;
@@ -9,6 +10,7 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleApplication {
@@ -52,9 +54,13 @@ public class ConsoleApplication {
                     String netIP = in.nextLine();
                     System.out.println("write down the name of the network you want to join:");
                     String netName = in.nextLine();
+                    List<String> nets = Arrays.stream(netName.split("/")).toList();
 
                     try{
-                        client.connect("http://"+ netIP + ":1010/remoteClipboard?wsdl", Arrays.stream(netName.split("/")).toList());
+                        this.clipboard.addSeveralNets(nets);
+                        for(User user : client.connect("http://"+ netIP + ":1010/remoteClipboard?wsdl", nets)){
+                            this.clipboard.register(user.getUsername(), user.getWsdl(), user.getNets());
+                        }
                     }catch(MalformedURLException e){
                         e.printStackTrace();
                     }

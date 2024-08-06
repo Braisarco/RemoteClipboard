@@ -74,7 +74,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   public List<User> getRemoteUsers(List<String> netNames){
     List<User> result = new ArrayList<>();
     for (String net : netNames){
-      if (nets.containsKey(net)) {
+      if (this.nets.containsKey(net)) {
         result.add(this.localUser);
         for (User usr : this.remoteUsers){
           if (this.nets.get(net).contains(usr.getUsername()) && !result.contains(usr)){
@@ -138,6 +138,14 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
       return this.nets.get(netName);
     }else{
       return null;
+    }
+  }
+
+  public void addSeveralNets(List<String> nets){
+    for (String net : nets){
+      if (!this.nets.containsKey(net)){
+        this.nets.put(net, new ArrayList<>());
+      }
     }
   }
 
