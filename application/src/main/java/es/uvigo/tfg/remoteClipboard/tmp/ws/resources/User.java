@@ -11,6 +11,8 @@ public class User {
     private String wsdl;
     private CustomClipboard clipboard;
 
+    public User(){}
+
     public User(String name, String wsdl){
         this.username = name;
         this.wsdl = wsdl;
