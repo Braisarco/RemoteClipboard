@@ -40,9 +40,11 @@ public class RemoteClipboardClient implements ClipboardOwner {
 
     private void addAllRemoteServices(List<User> users, List<String> nets){
         for (User user : users){
-            RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(user.getUsername(), user.getWsdl(), nets);
-            if(clipboardService.register()){
-                this.remoteServices.add(clipboardService);
+            if (!user.getUsername().equals(this.user)) {
+                RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(user.getUsername(), user.getWsdl(), nets);
+                if (clipboardService.register()) {
+                    this.remoteServices.add(clipboardService);
+                }
             }
         }
     }
