@@ -34,7 +34,6 @@ public class RemoteClipboardClient implements ClipboardOwner {
             addAllRemoteServices(remoteUsers, nets);
             return remoteUsers;
         }
-
         return null;
     }
 
