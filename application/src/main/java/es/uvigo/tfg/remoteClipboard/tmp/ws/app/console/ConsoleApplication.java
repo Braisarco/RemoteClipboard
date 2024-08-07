@@ -58,7 +58,7 @@ public class ConsoleApplication {
 
                     try{
                         this.clipboard.addSeveralNets(nets);
-                        List<User> remoteUsers = client.connect("http://"+ netIP + ":1010/remoteClipboard?wsdl", nets);
+                        List<User> remoteUsers = client.connect("http://"+ netIP + ":10101/remoteClipboard?wsdl", nets);
                         if (!remoteUsers.isEmpty()){
                             for(User user : remoteUsers){
                                 this.clipboard.register(user.getUsername(), user.getWsdl(), user.getNets());

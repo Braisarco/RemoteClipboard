@@ -15,7 +15,7 @@ public class RemoteClipboardServer {
     }
     public void publishService(){
         try{
-            Endpoint.publish("http://"+ InetAddress.getLocalHost().getHostAddress() +":1010/remoteClipboard",
+            Endpoint.publish("http://"+ InetAddress.getLocalHost().getHostAddress() +":10101/remoteClipboard",
                     this.clipboard);
         }catch(UnknownHostException e){
             e.printStackTrace();

@@ -21,7 +21,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   public RemoteClipboardSIB() {
     try{
       this.localUser = new User(InetAddress.getLocalHost().getHostName(), "http://" +
-              InetAddress.getLocalHost().getHostAddress() +":1010/remoteClipboard?wsdl");
+              InetAddress.getLocalHost().getHostAddress() +":10101/remoteClipboard?wsdl");
     }catch(UnknownHostException e){
       e.printStackTrace();
     }

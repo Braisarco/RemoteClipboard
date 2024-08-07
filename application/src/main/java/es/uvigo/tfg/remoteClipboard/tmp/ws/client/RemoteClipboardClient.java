@@ -52,7 +52,7 @@ public class RemoteClipboardClient implements ClipboardOwner {
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
         try {
-            CustomTransferable transferable = new CustomTransferable(contents);
+            CustomTransferable transferable = new CustomTransferable(clipboard.getContents(this));
 
             for (RemoteClipboardProxy service : this.remoteServices) {
                 this.executor.execute(() -> service.addContent(transferable));
