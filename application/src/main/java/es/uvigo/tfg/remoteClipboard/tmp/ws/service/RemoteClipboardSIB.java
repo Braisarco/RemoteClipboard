@@ -144,9 +144,11 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   }
 
   public void addSeveralNets(List<String> nets){
+    List<String> emptyNet = new ArrayList<>();
+    emptyNet.add(this.localUser.getUsername());
     for (String net : nets){
       if (!this.nets.containsKey(net)){
-        this.nets.put(net, new ArrayList<>());
+        this.nets.put(net, emptyNet);
       }
     }
   }
