@@ -61,7 +61,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     boolean userRemoved = false;
     int userIndex = this.userAlreadyExists(username);
 
-    if (userIndex != -1){
+    if (userIndex >= 0){
       this.remoteUsers.remove(userIndex);
       userRemoved = true;
       this.nets.forEach((k,v)->{
@@ -92,7 +92,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
       return this.localUser.getContentStr();
     } else{
       int index = userAlreadyExists(username);
-      if (index != -1) {
+      if (index >= 0) {
         return this.remoteUsers.get(index).getContentStr();
       }
     }
@@ -101,7 +101,9 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
 
   private int userAlreadyExists(String username){
     int userExists = -1;
-    if (!this.localUser.getUsername().equals(username)){
+    if (!this.localUser.getUsername().equals(username)) {
+      userExists = -2;
+    }else{
       for (User user : this.remoteUsers){
         if (user.getUsername().equals(username)){
           userExists = this.remoteUsers.indexOf(user);
@@ -159,7 +161,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   public boolean addContent(String username, CustomTransferable content){
     boolean contentAdded = false;
     int userIndex = this.userAlreadyExists(username);
-    if (userIndex != -1){
+    if (userIndex >= 0){
       contentAdded = this.remoteUsers.get(userIndex).addContent(content);
     }
     return contentAdded;
