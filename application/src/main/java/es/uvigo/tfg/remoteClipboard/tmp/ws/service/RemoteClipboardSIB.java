@@ -101,7 +101,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
 
   private int userAlreadyExists(String username){
     int userExists = -1;
-    if (!this.localUser.getUsername().equals(username)) {
+    if (this.localUser.getUsername().equals(username)) {
       userExists = -2;
     }else{
       for (User user : this.remoteUsers){
