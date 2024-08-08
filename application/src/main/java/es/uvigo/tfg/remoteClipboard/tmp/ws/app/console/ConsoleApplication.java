@@ -24,6 +24,7 @@ public class ConsoleApplication {
             shutOff = false;
             this.client = new RemoteClipboardClient(InetAddress.getLocalHost().getHostName());
             this.clipboard = clipboard;
+            clipboard.setClient(this.client);
             this.server = new RemoteClipboardServer(this.clipboard);
         }catch(UnknownHostException e){
             e.printStackTrace();
@@ -75,6 +76,7 @@ public class ConsoleApplication {
                     break;
                 case "5":
                     shutOff = false;
+                    this.client.dissconnect();
                     in.close();
                     System.exit(0);
                     break;

@@ -48,6 +48,12 @@ public class RemoteClipboardClient implements ClipboardOwner {
         }
     }
 
+    public void dissconnect(){
+        for (RemoteClipboardProxy service : this.remoteServices){
+            service.removeUser(this.user);
+        }
+    }
+
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
         try {

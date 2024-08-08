@@ -1,12 +1,15 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 
 import javax.jws.WebService;
 import java.awt.datatransfer.Transferable;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +20,10 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   private User localUser;
   private List<User> remoteUsers;
   private Map<String, List<String>> nets;
+  private RemoteClipboardClient client;
 
   public RemoteClipboardSIB() {
+    this.client = null;
     try{
       this.localUser = new User(InetAddress.getLocalHost().getHostName(), "http://" +
               InetAddress.getLocalHost().getHostAddress() +":10101/remoteClipboard?wsdl");
@@ -28,7 +33,9 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     this.remoteUsers = new ArrayList<>();
     this.nets = new HashMap<>();
   }
-
+  public void setClient (RemoteClipboardClient cl){
+    this.client = cl;
+  }
   public String getLocalUsername(){
     return this.localUser.getUsername();
   }
@@ -52,6 +59,13 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
           this.nets.get(net).add(username);
         }
       }
+    }
+    try{
+      if (client != null){
+        this.client.connect(wsdl,nets);
+      }
+    }catch(MalformedURLException e){
+      e.printStackTrace();
     }
     return userAdded;
   }
