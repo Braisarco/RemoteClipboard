@@ -6,6 +6,7 @@ import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import java.awt.datatransfer.Transferable;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,8 @@ public class RemoteClipboardProxy {
           this.remoteClipboard = service.getPort(RemoteClipboardSEI.class);
         }
 
-        return this.remoteClipboard.register(this.username, this.wsdl, this.networks);
+        return this.remoteClipboard.register(this.username, "http://" +
+                InetAddress.getLocalHost().getHostAddress() +":10101/remoteClipboard?wsdl", this.networks);
       } catch (Exception e) {
         try {
           Thread.sleep(1000);
