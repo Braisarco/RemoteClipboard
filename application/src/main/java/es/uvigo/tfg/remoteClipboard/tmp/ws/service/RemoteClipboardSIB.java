@@ -6,11 +6,9 @@ import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 
 import javax.jws.WebService;
-import java.awt.datatransfer.Transferable;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
-import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,6 +101,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
       this.nets.get(netName).remove(username);
       if (this.remoteUsers.get(userIndex).getNets().isEmpty()){
         this.removeUser(username);
+        this.remoteServices.removeService(username);
       }
     }
 
