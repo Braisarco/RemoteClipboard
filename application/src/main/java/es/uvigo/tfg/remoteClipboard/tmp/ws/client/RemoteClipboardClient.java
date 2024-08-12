@@ -34,6 +34,7 @@ public class RemoteClipboardClient implements ClipboardOwner {
         } else if (connection.equals(RegisterResult.EXIST)) {
             List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
             addAllRemoteServices(remoteUsers, nets);
+            return remoteUsers;
         }
         return null;
     }
