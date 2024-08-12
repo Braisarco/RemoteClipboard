@@ -3,49 +3,41 @@ package es.uvigo.tfg.remoteClipboard.tmp.ws.resources;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardProxy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class RemoteServicesManager {
-    private List<RemoteClipboardProxy> remoteServices;
+    private Map<String, RemoteClipboardProxy> remoteServices;
     private Executor executor;
 
     public RemoteServicesManager(){
-        this.remoteServices = new ArrayList<>();
+        this.remoteServices = new HashMap<>();
         this.executor = Executors.newFixedThreadPool(50);
     }
 
-    public void addRemoteService(RemoteClipboardProxy service){
-        this.remoteServices.add(service);
+    public void addRemoteService(String username, RemoteClipboardProxy service){
+        this.remoteServices.put(username, service);
     }
 
     public void removeUserFromNet(String username, String localUsername, String netName){
-        for (RemoteClipboardProxy service : this.remoteServices){
-            if (service.getUsername().equals(username)){
-                executor.execute(()-> service.removeUserFromNet(netName, localUsername));
-            }
-        }
+        this.remoteServices.get(username).removeUserFromNet(netName, localUsername);
     }
 
     public void dissconnect(String user){
-        for (RemoteClipboardProxy service : this.remoteServices){
-            this.executor.execute(() -> service.removeUser(user));
-        }
+        this.remoteServices.forEach((k,v)->{
+            this.executor.execute(()->v.removeUser(user));
+        });
     }
 
     public void removeService(String username){
-        for (RemoteClipboardProxy service : this.remoteServices){
-            if (service.getUsername().equals(username)){
-                this.remoteServices.remove(service);
-            }
-        }
+        this.remoteServices.remove(username);
     }
 
     public void sendContent(CustomTransferable content){
-        for (RemoteClipboardProxy service : this.remoteServices){
-            this.executor.execute(() -> service.addContent(content));
-        }
+        this.remoteServices.forEach((k,v) ->{
+            this.executor.execute(() -> v.addContent(content));
+        });
     }
 }
