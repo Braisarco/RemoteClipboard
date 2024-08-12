@@ -76,7 +76,22 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
         }
       }
     }else{
-      result = RegisterResult.EXIST;
+      for (String net : nets){
+        if (this.nets.containsKey(net)) {
+          if (!this.remoteUsers.contains(auxiliarUser)) {
+            auxiliarUser.addNet(net);
+            result = RegisterResult.EXIST;
+          }
+          this.nets.get(net).add(username);
+          try {
+            if (client != null) {
+              this.client.connect(wsdl, nets);
+            }
+          } catch (MalformedURLException e) {
+            e.printStackTrace();
+          }
+        }
+      }
     }
     return result;
   }
