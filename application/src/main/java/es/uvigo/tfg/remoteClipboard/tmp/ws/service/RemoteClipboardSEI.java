@@ -12,6 +12,8 @@ import java.util.List;
 //@SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface RemoteClipboardSEI {
   @WebMethod
+  public String getUsername();
+  @WebMethod
   public boolean register(String user, String wsdl, List<String> nets);
   @WebMethod
   public boolean addContent(String user, CustomTransferable content);

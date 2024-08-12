@@ -1,6 +1,7 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.app.console;
 
 import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.server.RemoteClipboardServer;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
@@ -21,13 +22,15 @@ public class ConsoleApplication {
 
     public ConsoleApplication(RemoteClipboardSIB clipboard){
         try{
-            shutOff = false;
-            this.client = new RemoteClipboardClient(InetAddress.getLocalHost().getHostName());
+            RemoteServicesManager servicesManager = new RemoteServicesManager();
+            this.shutOff = false;
+            this.client = new RemoteClipboardClient(InetAddress.getLocalHost().getHostName(), servicesManager);
             this.clipboard = clipboard;
             clipboard.setClient(this.client);
+            clipboard.setRemoteServices(servicesManager);
             this.server = new RemoteClipboardServer(this.clipboard);
         }catch(UnknownHostException e){
-            e.printStackTrace();
+            System.err.println("[ERROR] while creating console application" + e.getMessage());
         }
     }
 

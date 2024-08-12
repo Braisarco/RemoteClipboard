@@ -50,6 +50,10 @@ public class RemoteClipboardProxy {
     throw new RuntimeException("Error stablishing connection");
   }
 
+  public String getUsername(){
+    return this.remoteClipboard.getUsername();
+  }
+
   public boolean addContent(CustomTransferable content){
     return this.remoteClipboard.addContent(this.username, content);
   }

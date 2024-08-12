@@ -2,6 +2,7 @@ package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 
 import javax.jws.WebService;
@@ -20,6 +21,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   private User localUser;
   private List<User> remoteUsers;
   private Map<String, List<String>> nets;
+  private RemoteServicesManager remoteServices;
   private RemoteClipboardClient client;
 
   public RemoteClipboardSIB() {
@@ -36,12 +38,20 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   public void setClient (RemoteClipboardClient cl){
     this.client = cl;
   }
+  public void setRemoteServices (RemoteServicesManager services){
+    this.remoteServices = services;
+  }
   public String getLocalUsername(){
     return this.localUser.getUsername();
   }
 
   public boolean addLocalContent(CustomTransferable content){
     return this.localUser.addContent(content);
+  }
+
+  @Override
+  public String getUsername(){
+    return this.localUser.getUsername();
   }
 
   @Override
@@ -145,6 +155,14 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     if (this.nets.containsKey(netName)){
       this.nets.remove(netName);
       netRemoved = true;
+      for (User user : this.remoteUsers){
+        if (user.getNets().contains(netName)){
+          user.removeNet(netName);
+        }
+        if(user.getNets().isEmpty()){
+          this.remoteServices.removeRemoteService(user.getUsername());
+        }
+      }
     }
     return netRemoved;
   }

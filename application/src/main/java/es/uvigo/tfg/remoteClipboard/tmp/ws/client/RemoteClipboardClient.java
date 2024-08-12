@@ -1,6 +1,7 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.client;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardProxy;
 
@@ -10,26 +11,21 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class RemoteClipboardClient implements ClipboardOwner {
-    private List<RemoteClipboardProxy> remoteServices;
-    private Executor executor;
+    private RemoteServicesManager services;
     private String user;
 
-    public RemoteClipboardClient(String username){
+    public RemoteClipboardClient(String username, RemoteServicesManager servicesManager){
         this.user = username;
-        this.remoteServices = new ArrayList<>();
-        this.executor = Executors.newFixedThreadPool(50);
+        this.services = servicesManager;
     }
 
     public List<User> connect(String wsdl, List<String> nets) throws MalformedURLException {
         RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(this.user, wsdl,nets);
         if (clipboardService.register()){
-            this.remoteServices.add(clipboardService);
+            this.services.addRemoteService(clipboardService);
             List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
             addAllRemoteServices(remoteUsers, nets);
             return remoteUsers;
@@ -42,34 +38,27 @@ public class RemoteClipboardClient implements ClipboardOwner {
             if (!user.getUsername().equals(this.user)) {
                 RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(user.getUsername(), user.getWsdl(), nets);
                 if (clipboardService.register()) {
-                    this.remoteServices.add(clipboardService);
+                    this.services.addRemoteService(clipboardService);
                 }
             }
         }
     }
 
     public void dissconnect(){
-        for (RemoteClipboardProxy service : this.remoteServices){
-            service.removeUser(this.user);
-        }
+        this.services.removeAllServices(this.user);
     }
 
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
         try {
             CustomTransferable transferable = new CustomTransferable(clipboard.getContents(this));
-
-            for (RemoteClipboardProxy service : this.remoteServices) {
-                this.executor.execute(() -> service.addContent(transferable));
-            }
+            this.services.sendContent(transferable);
         } catch (UnsupportedFlavorException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        this.executor.execute(() -> {
-            clipboard.setContents(contents, this);
-        });
+        clipboard.setContents(contents, this);
     }
 }
