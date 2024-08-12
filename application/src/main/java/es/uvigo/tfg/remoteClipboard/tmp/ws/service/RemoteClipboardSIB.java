@@ -2,6 +2,7 @@ package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RegisterResult;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 
@@ -53,16 +54,16 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   }
 
   @Override
-  public boolean register(String username, String wsdl, List<String> nets){
+  public RegisterResult register(String username, String wsdl, List<String> nets){
     User auxiliarUser = new User(username, wsdl);
-    boolean userAdded = false;
+    RegisterResult result = null;
     if(this.userAlreadyExists(username) == -1){
       for (String net : nets){
         if (this.nets.containsKey(net)){
           if (!this.remoteUsers.contains(auxiliarUser)){
             auxiliarUser.addNet(net);
             this.remoteUsers.add(auxiliarUser);
-            userAdded = true;
+            result = RegisterResult.REGISTERED;
           }
           this.nets.get(net).add(username);
           try{
@@ -74,8 +75,10 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
           }
         }
       }
+    }else{
+      result = RegisterResult.EXIST;
     }
-    return userAdded;
+    return result;
   }
 
   @Override

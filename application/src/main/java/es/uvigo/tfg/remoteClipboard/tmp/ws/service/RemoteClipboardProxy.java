@@ -1,6 +1,7 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RegisterResult;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 
 import javax.xml.namespace.QName;
@@ -24,7 +25,7 @@ public class RemoteClipboardProxy {
     this.networks = nets;
   }
 
-  public boolean register() {
+  public RegisterResult register() {
     for (int attempts = 0; attempts < 3; attempts++) {
       try {
         if (this.remoteClipboard == null) {

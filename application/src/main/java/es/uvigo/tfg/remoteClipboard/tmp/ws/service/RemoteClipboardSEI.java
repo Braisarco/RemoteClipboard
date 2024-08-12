@@ -1,6 +1,7 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RegisterResult;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 
 import javax.jws.WebMethod;
@@ -16,7 +17,7 @@ public interface RemoteClipboardSEI {
   @WebMethod
   public String getUsername();
   @WebMethod
-  public boolean register(String user, String wsdl, List<String> nets);
+  public RegisterResult register(String user, String wsdl, List<String> nets);
   @WebMethod
   public boolean addContent(String user, CustomTransferable content);
 

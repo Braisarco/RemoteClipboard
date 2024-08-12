@@ -1,6 +1,7 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.client;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RegisterResult;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardProxy;
@@ -24,11 +25,15 @@ public class RemoteClipboardClient implements ClipboardOwner {
 
     public List<User> connect(String wsdl, List<String> nets) throws MalformedURLException {
         RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(this.user, wsdl,nets);
-        if (clipboardService.register()){
+        RegisterResult connection = clipboardService.register();
+        if (connection.equals(RegisterResult.REGISTERED)){
             this.services.addRemoteService(clipboardService);
             List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
             addAllRemoteServices(remoteUsers, nets);
             return remoteUsers;
+        } else if (connection.equals(RegisterResult.EXIST)) {
+            List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
+            addAllRemoteServices(remoteUsers, nets);
         }
         return null;
     }
@@ -37,7 +42,7 @@ public class RemoteClipboardClient implements ClipboardOwner {
         for (User user : users){
             if (!user.getUsername().equals(this.user)) {
                 RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(user.getUsername(), user.getWsdl(), nets);
-                if (clipboardService.register()) {
+                if (clipboardService.register().equals(RegisterResult.REGISTERED)) {
                     this.services.addRemoteService(clipboardService);
                 }
             }
