@@ -56,7 +56,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   @Override
   public RegisterResult register(String username, String wsdl, List<String> nets){
     User auxiliarUser = new User(username, wsdl);
-    RegisterResult result = null;
+    RegisterResult result = RegisterResult.FAIL;
     if(this.userAlreadyExists(username) == -1){
       for (String net : nets){
         if (this.nets.containsKey(net)){
