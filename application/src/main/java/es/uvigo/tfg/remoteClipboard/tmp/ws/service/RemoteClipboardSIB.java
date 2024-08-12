@@ -160,7 +160,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
           user.removeNet(netName);
         }
         if(user.getNets().isEmpty()){
-          this.remoteServices.removeRemoteService(user.getUsername());
+          this.remoteServices.removeFromRemoteService(user.getUsername(), this.localUser.getUsername());
         }
       }
     }

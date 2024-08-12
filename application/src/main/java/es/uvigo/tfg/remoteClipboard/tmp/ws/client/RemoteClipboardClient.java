@@ -45,7 +45,7 @@ public class RemoteClipboardClient implements ClipboardOwner {
     }
 
     public void dissconnect(){
-        this.services.removeAllServices(this.user);
+        this.services.dissconnect(this.user);
     }
 
     @Override
