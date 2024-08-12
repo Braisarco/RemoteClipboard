@@ -21,6 +21,14 @@ public class RemoteServicesManager {
         this.remoteServices.put(username, service);
     }
 
+    public RemoteClipboardProxy getServiceByName(String username){
+        if (this.remoteServices.containsKey(username)){
+            return this.remoteServices.get(username);
+        }else{
+            return null;
+        }
+    }
+
     public void removeUserFromNet(String username, String localUsername, String netName){
         this.remoteServices.get(username).removeUserFromNet(netName, localUsername);
     }

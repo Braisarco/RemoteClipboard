@@ -173,17 +173,19 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
 
   public boolean removeNet(String netName){
     boolean netRemoved = false;
+    int userIndex = 0;
     if (this.nets.containsKey(netName)){
-      this.nets.remove(netName);
-      netRemoved = true;
-      for (User user : this.remoteUsers){
-        if (user.getNets().contains(netName)){
-          user.removeNet(netName);
-          if(user.getNets().isEmpty()){
-            this.remoteServices.removeUserFromNet(user.getUsername(), this.localUser.getUsername(), netName);
-          }
+      for (String user : this.nets.get(netName)){
+        userIndex = this.userAlreadyExists(user);
+        this.remoteServices.removeUserFromNet(user, this.localUser.getUsername(), netName);
+        this.remoteUsers.get(userIndex).removeNet(netName);
+        if (remoteUsers.get(userIndex).getNets().isEmpty()){
+          this.remoteServices.removeService(user);
+          this.remoteUsers.remove(userIndex);
         }
       }
+      this.nets.remove(netName);
+      netRemoved = true;
     }
     return netRemoved;
   }
