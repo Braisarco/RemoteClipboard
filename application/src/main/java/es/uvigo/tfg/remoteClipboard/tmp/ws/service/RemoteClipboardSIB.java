@@ -94,6 +94,20 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     }
     return userRemoved;
   }
+  @Override
+  public boolean removeUserFromNet(String netName, String username){
+    boolean userRemoved = false;
+    int userIndex = this.userAlreadyExists(username);
+
+    if (userIndex >= 0 && this.nets.containsKey(netName)){
+      this.nets.get(netName).remove(username);
+      if (this.remoteUsers.get(userIndex).getNets().isEmpty()){
+        this.removeUser(username);
+      }
+    }
+
+    return userRemoved;
+  }
 
   @Override
   public List<User> getRemoteUsers(List<String> netNames){
@@ -158,9 +172,9 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
       for (User user : this.remoteUsers){
         if (user.getNets().contains(netName)){
           user.removeNet(netName);
-        }
-        if(user.getNets().isEmpty()){
-          this.remoteServices.removeFromRemoteService(user.getUsername(), this.localUser.getUsername());
+          if(user.getNets().isEmpty()){
+            this.remoteServices.removeUserFromNet(user.getUsername(), this.localUser.getUsername(), netName);
+          }
         }
       }
     }

@@ -21,11 +21,10 @@ public class RemoteServicesManager {
         this.remoteServices.add(service);
     }
 
-    public void removeFromRemoteService(String username, String localUsername){
+    public void removeUserFromNet(String username, String localUsername, String netName){
         for (RemoteClipboardProxy service : this.remoteServices){
             if (service.getUsername().equals(username)){
-                executor.execute(()-> service.removeUser(localUsername));
-                this.remoteServices.remove(service);
+                executor.execute(()-> service.removeUserFromNet(netName, localUsername));
             }
         }
     }
@@ -33,6 +32,14 @@ public class RemoteServicesManager {
     public void dissconnect(String user){
         for (RemoteClipboardProxy service : this.remoteServices){
             this.executor.execute(() -> service.removeUser(user));
+        }
+    }
+
+    public void removeService(String username){
+        for (RemoteClipboardProxy service : this.remoteServices){
+            if (service.getUsername().equals(username)){
+                this.remoteServices.remove(service);
+            }
         }
     }
 

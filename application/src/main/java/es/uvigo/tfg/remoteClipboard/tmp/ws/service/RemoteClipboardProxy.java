@@ -53,6 +53,9 @@ public class RemoteClipboardProxy {
   public String getUsername(){
     return this.remoteClipboard.getUsername();
   }
+  public boolean removeUserFromNet(String netName, String username){
+    return this.remoteClipboard.removeUserFromNet(netName, username);
+  }
 
   public boolean addContent(CustomTransferable content){
     return this.remoteClipboard.addContent(this.username, content);

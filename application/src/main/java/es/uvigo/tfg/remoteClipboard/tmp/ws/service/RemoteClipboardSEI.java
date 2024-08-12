@@ -12,6 +12,8 @@ import java.util.List;
 //@SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface RemoteClipboardSEI {
   @WebMethod
+  public boolean removeUserFromNet(String netName, String username);
+  @WebMethod
   public String getUsername();
   @WebMethod
   public boolean register(String user, String wsdl, List<String> nets);
