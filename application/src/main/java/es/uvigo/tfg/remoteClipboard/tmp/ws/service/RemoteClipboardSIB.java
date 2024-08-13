@@ -187,9 +187,9 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     if (this.nets.containsKey(netName)){
       for (String user : this.nets.get(netName)){
         userIndex = this.userAlreadyExists(user);
-        this.remoteServices.removeUserFromNet(user, this.localUser.getUsername(), netName);
-
-        //TODO: Cada vez que se añada un usuario ou que se meta nunha rede haina que añadir si o si
+        if (!this.localUser.getUsername().equals(user)){
+          this.remoteServices.removeUserFromNet(user, this.localUser.getUsername(), netName);
+        }
         this.remoteUsers.get(userIndex).removeNet(netName);
         if (remoteUsers.get(userIndex).getNets().isEmpty()){
           this.remoteServices.removeService(user);

@@ -31,7 +31,9 @@ public class RemoteServicesManager {
     }
 
     public void removeUserFromNet(String username, String localUsername, String netName){
-        this.remoteServices.get(username).removeUserFromNet(netName, localUsername);
+        if (!this.remoteServices.isEmpty()){
+            this.remoteServices.get(username).removeUserFromNet(netName, localUsername);
+        }
     }
 
     public void dissconnect(String user){
