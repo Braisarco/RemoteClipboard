@@ -57,7 +57,8 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   public boolean register(String username, String wsdl, List<String> nets){
     User auxiliarUser = new User(username, wsdl);
     boolean result = false;
-    if(this.userAlreadyExists(username) == -1){
+    int userIndex = userAlreadyExists(username);
+    if(userIndex == -1){
       for (String net : nets){
         if (this.nets.containsKey(net)){
           if (!this.remoteUsers.contains(auxiliarUser)){
