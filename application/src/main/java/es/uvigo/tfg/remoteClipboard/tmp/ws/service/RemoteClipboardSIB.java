@@ -114,7 +114,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     if (userIndex >= 0 && this.nets.containsKey(netName)){
       this.nets.get(netName).remove(username);
       if (this.remoteUsers.get(userIndex).getNets().isEmpty()){
-        this.removeUser(username);
+        this.remoteUsers.remove(userIndex);
         this.remoteServices.removeService(username);
       }
     }
