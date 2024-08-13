@@ -58,26 +58,34 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     User auxiliarUser = new User(username, wsdl);
     boolean result = false;
     int userIndex = userAlreadyExists(username);
-    if(userIndex == -1){
-      for (String net : nets){
-        if (this.nets.containsKey(net)){
-          if (!this.remoteUsers.contains(auxiliarUser)){
-            auxiliarUser.addNet(net);
-            this.remoteUsers.add(auxiliarUser);
-            result = true;
+    switch (userIndex) {
+      case -1:
+        for (String net : nets) {
+          if (this.nets.containsKey(net)) {
+            if (!this.remoteUsers.contains(auxiliarUser)) {
+              auxiliarUser.addNet(net);
+              this.remoteUsers.add(auxiliarUser);
+              result = true;
+            }
+            this.nets.get(net).add(username);
+          } else {
+            nets.remove(net);
           }
-          this.nets.get(net).add(username);
-        }else{
-          nets.remove(net);
         }
-      }
-      try{
-        if (client != null){
-          this.client.connect(wsdl,nets);
+        try {
+          if (client != null) {
+            this.client.connect(wsdl, nets);
+          }
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
         }
-      }catch(MalformedURLException e){
-        e.printStackTrace();
-      }
+        break;
+      case -2:
+        for (String net: nets){
+          if (this.nets.containsKey(net) && !this.localUser.getNets().contains(net)){
+            this.localUser.addNet(net);
+          }
+        }
     }
     return result;
   }
