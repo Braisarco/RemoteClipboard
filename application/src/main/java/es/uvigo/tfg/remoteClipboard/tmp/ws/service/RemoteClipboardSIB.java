@@ -72,6 +72,13 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
             nets.remove(net);
           }
         }
+        try {
+          if (client != null) {
+            this.client.connect(wsdl, nets);
+          }
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
         break;
       case -2:
         for (String net: nets){
@@ -80,13 +87,6 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
           }
         }
         break;
-    }
-    try {
-      if (client != null) {
-        this.client.connect(wsdl, nets);
-      }
-    } catch (MalformedURLException e) {
-      e.printStackTrace();
     }
     return result;
   }
