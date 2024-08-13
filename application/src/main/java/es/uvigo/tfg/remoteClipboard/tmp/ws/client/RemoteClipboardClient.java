@@ -25,18 +25,18 @@ public class RemoteClipboardClient implements ClipboardOwner {
 
     public List<User> connect(String wsdl, List<String> nets) throws MalformedURLException {
         RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(this.user, wsdl,nets);
+        clipboardService.register();
         if (this.services.serviceAlreadyExist(clipboardService.getUsername()) &&
                 clipboardService.addUserToNet(this.user, nets)){
             List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
             addAllRemoteServices(remoteUsers, nets);
             return remoteUsers;
-        }else if (clipboardService.register()){
+        }else {
             this.services.addRemoteService(clipboardService.getUsername(), clipboardService);
             List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
             addAllRemoteServices(remoteUsers, nets);
             return remoteUsers;
         }
-        return null;
     }
 
     private void addAllRemoteServices(List<User> users, List<String> nets){
