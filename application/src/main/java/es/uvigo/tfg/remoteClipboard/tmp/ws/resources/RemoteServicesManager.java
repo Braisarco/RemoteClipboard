@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RemoteServicesManager {
     private Map<String, RemoteClipboardProxy> remoteServices;
@@ -40,6 +41,7 @@ public class RemoteServicesManager {
     }
 
     public void removeService(String username){
+        this.remoteServices.get(username).removeUser(username);
         this.remoteServices.remove(username);
     }
 
@@ -47,5 +49,16 @@ public class RemoteServicesManager {
         this.remoteServices.forEach((k,v) ->{
             this.executor.execute(() -> v.addContent(content));
         });
+    }
+
+    public boolean serviceAlreadyExist(String username){
+        AtomicBoolean userExist = new AtomicBoolean(false);
+        this.remoteServices.forEach((k,v) ->{
+            String auxiliarUsername = v.getUsername();
+            if (auxiliarUsername.equals(username)){
+                userExist.set(true);
+            }
+        });
+        return userExist.get();
     }
 }

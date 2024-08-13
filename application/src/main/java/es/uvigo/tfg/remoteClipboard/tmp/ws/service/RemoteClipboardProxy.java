@@ -25,7 +25,7 @@ public class RemoteClipboardProxy {
     this.networks = nets;
   }
 
-  public RegisterResult register() {
+  public boolean register() {
     for (int attempts = 0; attempts < 3; attempts++) {
       try {
         if (this.remoteClipboard == null) {
@@ -68,5 +68,9 @@ public class RemoteClipboardProxy {
 
   public List<User> getRemoteUsers(List<String> nets){
     return this.remoteClipboard.getRemoteUsers(nets);
+  }
+
+  public boolean addUserToNet(String username, List<String> nets){
+    return this.remoteClipboard.addUserToNet(username, nets);
   }
 }

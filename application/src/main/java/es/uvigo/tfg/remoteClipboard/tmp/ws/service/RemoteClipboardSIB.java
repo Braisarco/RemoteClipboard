@@ -54,16 +54,16 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   }
 
   @Override
-  public RegisterResult register(String username, String wsdl, List<String> nets){
+  public boolean register(String username, String wsdl, List<String> nets){
     User auxiliarUser = new User(username, wsdl);
-    RegisterResult result = RegisterResult.FAIL;
+    boolean result = false;
     if(this.userAlreadyExists(username) == -1){
       for (String net : nets){
         if (this.nets.containsKey(net)){
           if (!this.remoteUsers.contains(auxiliarUser)){
             auxiliarUser.addNet(net);
             this.remoteUsers.add(auxiliarUser);
-            result = RegisterResult.REGISTERED;
+            result = true;
           }
           this.nets.get(net).add(username);
           try{
@@ -73,13 +73,6 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
           }catch(MalformedURLException e){
             e.printStackTrace();
           }
-        }
-      }
-    }else{
-      for (String net : nets){
-        if (this.nets.containsKey(net) && !this.nets.get(net).contains(username)){
-          this.nets.get(net).add(username);
-          result = RegisterResult.EXIST;
         }
       }
     }
@@ -93,6 +86,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
 
     if (userIndex >= 0){
       this.remoteUsers.remove(userIndex);
+      this.remoteServices.removeService(username);
       userRemoved = true;
       this.nets.forEach((k,v)->{
         v.remove(username);
@@ -114,6 +108,22 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     }
 
     return userRemoved;
+  }
+
+  @Override
+  public boolean addUserToNet(String username, List<String> nets){
+    boolean userAdded = false;
+    int userIndex = userAlreadyExists(username);
+    if (userIndex > 0){
+      for (String net : nets){
+        if (this.nets.containsKey(net)){
+          this.nets.get(net).add(username);
+          this.remoteUsers.get(userIndex).addNet(net);
+          userAdded = true;
+        }
+      }
+    }
+    return userAdded;
   }
 
   @Override
@@ -178,6 +188,8 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
       for (String user : this.nets.get(netName)){
         userIndex = this.userAlreadyExists(user);
         this.remoteServices.removeUserFromNet(user, this.localUser.getUsername(), netName);
+
+        //TODO: Cada vez que se añada un usuario ou que se meta nunha rede haina que añadir si o si
         this.remoteUsers.get(userIndex).removeNet(netName);
         if (remoteUsers.get(userIndex).getNets().isEmpty()){
           this.remoteServices.removeService(user);

@@ -25,13 +25,13 @@ public class RemoteClipboardClient implements ClipboardOwner {
 
     public List<User> connect(String wsdl, List<String> nets) throws MalformedURLException {
         RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(this.user, wsdl,nets);
-        RegisterResult connection = clipboardService.register();
-        if (connection.equals(RegisterResult.REGISTERED)){
-            this.services.addRemoteService(clipboardService.getUsername(), clipboardService);
+        if (this.services.serviceAlreadyExist(clipboardService.getUsername()) &&
+                clipboardService.addUserToNet(this.user, nets)){
             List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
             addAllRemoteServices(remoteUsers, nets);
             return remoteUsers;
-        } else if (connection.equals(RegisterResult.EXIST)) {
+        }else if (clipboardService.register()){
+            this.services.addRemoteService(clipboardService.getUsername(), clipboardService);
             List<User> remoteUsers = clipboardService.getRemoteUsers(nets);
             addAllRemoteServices(remoteUsers, nets);
             return remoteUsers;
@@ -41,9 +41,9 @@ public class RemoteClipboardClient implements ClipboardOwner {
 
     private void addAllRemoteServices(List<User> users, List<String> nets){
         for (User user : users){
-            if (!user.getUsername().equals(this.user)) {
+            if (!user.getUsername().equals(this.user) && this.services.serviceAlreadyExist(user.getUsername())) {
                 RemoteClipboardProxy clipboardService = new RemoteClipboardProxy(user.getUsername(), user.getWsdl(), nets);
-                if (clipboardService.register().equals(RegisterResult.REGISTERED)) {
+                if (clipboardService.register()) {
                     this.services.addRemoteService(clipboardService.getUsername(), clipboardService);
                 }
             }

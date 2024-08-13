@@ -13,17 +13,19 @@ import java.util.List;
 //@SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface RemoteClipboardSEI {
   @WebMethod
-  public boolean removeUserFromNet(String netName, String username);
+  boolean removeUserFromNet(String netName, String username);
   @WebMethod
-  public String getUsername();
+  String getUsername();
   @WebMethod
-  public RegisterResult register(String user, String wsdl, List<String> nets);
+  boolean register(String user, String wsdl, List<String> nets);
   @WebMethod
-  public boolean addContent(String user, CustomTransferable content);
+  boolean addUserToNet(String user, List<String> nets);
+  @WebMethod
+  boolean addContent(String user, CustomTransferable content);
 
   @WebMethod
-  public boolean removeUser(String user);
+  boolean removeUser(String user);
 
   @WebMethod
-  public List<User> getRemoteUsers(List<String> nets);
+  List<User> getRemoteUsers(List<String> nets);
 }
