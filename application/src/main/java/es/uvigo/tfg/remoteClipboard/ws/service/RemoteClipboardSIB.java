@@ -8,6 +8,9 @@ import es.uvigo.tfg.remoteClipboard.ws.utils.User;
 import javax.jws.WebService;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -258,13 +261,12 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
 
   private CustomTransferable deserialize(byte[] serializedTransferable){
     CustomTransferable result = new CustomTransferable();
-    try{
-      JAXBContext context = JAXBContext.newInstance(CustomTransferable.class);
-      Unmarshaller unmarshaller = context.createUnmarshaller();
+    ByteArrayInputStream input = new ByteArrayInputStream(serializedTransferable);
 
-      StringReader reader = new StringReader(new String(serializedTransferable));
-      result = (CustomTransferable) unmarshaller.unmarshal(reader);
-    }catch(Exception e){
+    try (ObjectInputStream objectInput = new ObjectInputStream(input)) {
+      result = (CustomTransferable) objectInput.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+      System.err.println("CUSTOMTRANSFERABLE: Error while deserializing transferable");
       e.printStackTrace();
     }
     return result;
