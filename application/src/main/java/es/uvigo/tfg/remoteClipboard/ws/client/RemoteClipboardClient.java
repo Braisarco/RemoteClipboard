@@ -65,12 +65,7 @@ public class RemoteClipboardClient implements ClipboardOwner {
             e.printStackTrace();
         }
         this.actualContent = this.systemClipboard.getContents(this);
-
-        try{
-            this.services.sendContent(transferable);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        this.systemClipboard.setContents(transferable, this);
+        this.services.sendContent(this.systemClipboard.getContents(transferable));
+        this.systemClipboard.setContents(this.actualContent, this);
     }
 }
