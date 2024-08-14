@@ -19,7 +19,7 @@ public interface RemoteClipboardSEI {
   @WebMethod
   boolean addUserToNet(String user, List<String> nets);
   @WebMethod
-  boolean addContent(String user, CustomTransferable content);
+  boolean addContent(String user, byte[] content);
 
   @WebMethod
   boolean removeUser(String user);

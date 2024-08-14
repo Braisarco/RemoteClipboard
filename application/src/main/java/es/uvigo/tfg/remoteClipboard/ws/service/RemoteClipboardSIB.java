@@ -6,6 +6,9 @@ import es.uvigo.tfg.remoteClipboard.ws.utils.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.ws.utils.User;
 
 import javax.jws.WebService;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -243,12 +246,27 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
   }
 
   @Override
-  public boolean addContent(String username, CustomTransferable content){
+  public boolean addContent(String username, byte[] content){
+    CustomTransferable transferable = this.deserialize(content);
     boolean contentAdded = false;
     int userIndex = this.userAlreadyExists(username);
     if (userIndex >= 0){
-      contentAdded = this.remoteUsers.get(userIndex).addContent(content);
+      contentAdded = this.remoteUsers.get(userIndex).addContent(transferable);
     }
     return contentAdded;
+  }
+
+  private CustomTransferable deserialize(byte[] serializedTransferable){
+    CustomTransferable result = new CustomTransferable();
+    try{
+      JAXBContext context = JAXBContext.newInstance(CustomTransferable.class);
+      Unmarshaller unmarshaller = context.createUnmarshaller();
+
+      StringReader reader = new StringReader(new String(serializedTransferable));
+      result = (CustomTransferable) unmarshaller.unmarshal(reader);
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+    return result;
   }
 }

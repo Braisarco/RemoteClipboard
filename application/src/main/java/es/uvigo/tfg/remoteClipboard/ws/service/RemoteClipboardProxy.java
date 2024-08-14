@@ -56,7 +56,7 @@ public class RemoteClipboardProxy {
   }
 
   public boolean addContent(CustomTransferable content){
-    return this.remoteClipboard.addContent(this.username, content);
+    return this.remoteClipboard.addContent(this.username, content.serialize());
   }
 
   public boolean removeUser(String user){
