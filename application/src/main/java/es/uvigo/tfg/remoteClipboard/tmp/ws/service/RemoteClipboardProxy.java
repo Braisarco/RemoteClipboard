@@ -1,15 +1,12 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RegisterResult;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
-import java.awt.datatransfer.Transferable;
 import java.net.InetAddress;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RemoteClipboardProxy {

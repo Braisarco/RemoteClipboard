@@ -1,10 +1,9 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.app.console;
 
 import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RemoteServicesManager;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.RemoteServicesManager;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.server.RemoteClipboardServer;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSIB;
 
 import java.net.InetAddress;

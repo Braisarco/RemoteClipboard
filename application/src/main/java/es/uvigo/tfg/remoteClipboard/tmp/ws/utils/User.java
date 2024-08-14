@@ -1,4 +1,4 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.resources;
+package es.uvigo.tfg.remoteClipboard.tmp.ws.utils;
 
 import es.uvigo.tfg.remoteClipboard.CustomClipboard;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;

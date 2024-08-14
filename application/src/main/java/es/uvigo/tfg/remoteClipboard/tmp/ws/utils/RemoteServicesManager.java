@@ -1,4 +1,4 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.resources;
+package es.uvigo.tfg.remoteClipboard.tmp.ws.utils;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardProxy;
@@ -40,6 +40,7 @@ public class RemoteServicesManager {
         this.remoteServices.forEach((k,v)->{
             this.executor.execute(()->v.removeUser(user));
         });
+        this.remoteServices.clear();
     }
 
     public void removeService(String username){

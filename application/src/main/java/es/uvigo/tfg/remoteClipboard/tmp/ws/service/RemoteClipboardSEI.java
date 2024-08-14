@@ -1,12 +1,10 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RegisterResult;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import java.awt.datatransfer.Transferable;
 import java.util.List;
 
 @WebService(name = "RemoteClipboard")

@@ -1,11 +1,12 @@
 package es.uvigo.tfg.remoteClipboard.tmp.ws.client;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RegisterResult;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.RemoteServicesManager;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.resources.User;
+import es.uvigo.tfg.remoteClipboard.clipboardUtiles.Subscriber;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.RemoteServicesManager;
+import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
 import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardProxy;
 
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
@@ -16,11 +17,16 @@ import java.util.List;
 
 public class RemoteClipboardClient implements ClipboardOwner {
     private RemoteServicesManager services;
+    private Transferable actualContent;
+    private Clipboard systemClipboard;
     private String user;
 
     public RemoteClipboardClient(String username, RemoteServicesManager servicesManager){
         this.user = username;
         this.services = servicesManager;
+        this.systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        this.actualContent = this.systemClipboard.getContents(this);
+        this.systemClipboard.setContents(this.actualContent, this);
     }
 
     public List<User> connect(String wsdl, List<String> nets) throws MalformedURLException {
@@ -55,16 +61,19 @@ public class RemoteClipboardClient implements ClipboardOwner {
     }
 
     @Override
-    public void lostOwnership(Clipboard clipboard, Transferable contents) {
-        try {
-            CustomTransferable transferable = new CustomTransferable(clipboard.getContents(this));
-            this.services.sendContent(transferable);
-        } catch (UnsupportedFlavorException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+    public void lostOwnership(Clipboard clipboard, Transferable transferable) {
+        try{
+            Thread.sleep(200);
+        }catch(Exception e){
             e.printStackTrace();
         }
+        this.actualContent = this.systemClipboard.getContents(this);
 
-        clipboard.setContents(contents, this);
+        try{
+            this.services.sendContent(new CustomTransferable(transferable));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        this.systemClipboard.setContents(transferable, this);
     }
 }
