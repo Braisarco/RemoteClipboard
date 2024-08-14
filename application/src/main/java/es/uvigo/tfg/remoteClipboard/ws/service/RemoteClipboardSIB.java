@@ -1,9 +1,9 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
+package es.uvigo.tfg.remoteClipboard.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.RemoteServicesManager;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
+import es.uvigo.tfg.remoteClipboard.ws.client.RemoteClipboardClient;
+import es.uvigo.tfg.remoteClipboard.ws.utils.RemoteServicesManager;
+import es.uvigo.tfg.remoteClipboard.ws.utils.User;
 
 import javax.jws.WebService;
 import java.net.InetAddress;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebService(endpointInterface = "es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSEI")
+@WebService(endpointInterface = "es.uvigo.tfg.remoteClipboard.ws.service.RemoteClipboardSEI")
 public class RemoteClipboardSIB implements RemoteClipboardSEI {
   private User localUser;
   private List<User> remoteUsers;

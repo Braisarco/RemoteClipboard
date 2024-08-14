@@ -1,7 +1,7 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
+package es.uvigo.tfg.remoteClipboard.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
+import es.uvigo.tfg.remoteClipboard.ws.utils.User;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -28,7 +28,7 @@ public class RemoteClipboardProxy {
         if (this.remoteClipboard == null) {
           URL url = new URL(this.wsdl);
           QName name = new QName(
-                  "http://service.ws.tmp.remoteClipboard.tfg.uvigo.es/",
+                  "http://service.ws.remoteClipboard.tfg.uvigo.es/",
                   "RemoteClipboardSIBService");
 
           Service service = Service.create(url, name);

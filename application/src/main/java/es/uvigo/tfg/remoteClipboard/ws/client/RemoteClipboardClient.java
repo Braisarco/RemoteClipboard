@@ -1,17 +1,14 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.client;
+package es.uvigo.tfg.remoteClipboard.ws.client;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-import es.uvigo.tfg.remoteClipboard.clipboardUtiles.Subscriber;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.RemoteServicesManager;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardProxy;
+import es.uvigo.tfg.remoteClipboard.ws.utils.RemoteServicesManager;
+import es.uvigo.tfg.remoteClipboard.ws.utils.User;
+import es.uvigo.tfg.remoteClipboard.ws.service.RemoteClipboardProxy;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 

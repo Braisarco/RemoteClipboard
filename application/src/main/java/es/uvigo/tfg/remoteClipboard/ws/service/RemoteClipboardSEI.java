@@ -1,7 +1,7 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.service;
+package es.uvigo.tfg.remoteClipboard.ws.service;
 
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
+import es.uvigo.tfg.remoteClipboard.ws.utils.User;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;

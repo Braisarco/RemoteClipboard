@@ -1,10 +1,9 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.server;
+package es.uvigo.tfg.remoteClipboard.ws.server;
 
-import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSIB;
+import es.uvigo.tfg.remoteClipboard.ws.service.RemoteClipboardSIB;
 
 import javax.xml.ws.Endpoint;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
 

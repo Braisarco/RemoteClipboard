@@ -1,10 +1,10 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.app.console;
+package es.uvigo.tfg.remoteClipboard.ws.app.console;
 
-import es.uvigo.tfg.remoteClipboard.tmp.ws.client.RemoteClipboardClient;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.RemoteServicesManager;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.utils.User;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.server.RemoteClipboardServer;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSIB;
+import es.uvigo.tfg.remoteClipboard.ws.client.RemoteClipboardClient;
+import es.uvigo.tfg.remoteClipboard.ws.utils.RemoteServicesManager;
+import es.uvigo.tfg.remoteClipboard.ws.utils.User;
+import es.uvigo.tfg.remoteClipboard.ws.server.RemoteClipboardServer;
+import es.uvigo.tfg.remoteClipboard.ws.service.RemoteClipboardSIB;
 
 import java.net.InetAddress;
 import java.net.MalformedURLException;

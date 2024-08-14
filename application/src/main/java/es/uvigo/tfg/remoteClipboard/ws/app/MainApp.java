@@ -1,7 +1,7 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.app;
+package es.uvigo.tfg.remoteClipboard.ws.app;
 
-import es.uvigo.tfg.remoteClipboard.tmp.ws.app.console.ConsoleApplication;
-import es.uvigo.tfg.remoteClipboard.tmp.ws.service.RemoteClipboardSIB;
+import es.uvigo.tfg.remoteClipboard.ws.app.console.ConsoleApplication;
+import es.uvigo.tfg.remoteClipboard.ws.service.RemoteClipboardSIB;
 
 public class MainApp {
     public static void main(String[]args){

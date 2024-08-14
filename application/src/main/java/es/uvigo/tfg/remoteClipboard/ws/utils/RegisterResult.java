@@ -1,4 +1,4 @@
-package es.uvigo.tfg.remoteClipboard.tmp.ws.utils;
+package es.uvigo.tfg.remoteClipboard.ws.utils;
 
 public enum RegisterResult {
     REGISTERED,
