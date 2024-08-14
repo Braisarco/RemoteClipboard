@@ -1,5 +1,9 @@
 package es.uvigo.tfg.remoteClipboard;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -9,10 +13,14 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "CustomTransferable", propOrder = {
+        "customData"
+})
 public class CustomTransferable implements Serializable, Transferable {
   private static final long serialVersionUID = 1L;
 
+  @XmlElement
   private Map<DataFlavor, Object> customData;
 
   public CustomTransferable() {

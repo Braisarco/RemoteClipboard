@@ -60,7 +60,7 @@ public class RemoteClipboardClient implements ClipboardOwner {
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable transferable) {
         try{
-            Thread.sleep(200);
+            Thread.sleep(50);
         }catch(Exception e){
             e.printStackTrace();
         }
