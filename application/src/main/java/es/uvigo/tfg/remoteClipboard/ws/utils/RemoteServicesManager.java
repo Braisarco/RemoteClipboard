@@ -3,6 +3,9 @@ package es.uvigo.tfg.remoteClipboard.ws.utils;
 import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.ws.service.RemoteClipboardProxy;
 
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -48,10 +51,20 @@ public class RemoteServicesManager {
         this.remoteServices.remove(username);
     }
 
-    public void sendContent(CustomTransferable content){
-        this.remoteServices.forEach((k,v) ->{
-            this.executor.execute(() -> v.addContent(content));
-        });
+    public void sendContent(Transferable content){
+
+            this.remoteServices.forEach((k,v) ->{
+                this.executor.execute(() -> {
+                    try {
+                        v.addContent(new CustomTransferable(content));
+                    } catch (UnsupportedFlavorException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            });
+
     }
 
     public boolean serviceAlreadyExist(String username){
