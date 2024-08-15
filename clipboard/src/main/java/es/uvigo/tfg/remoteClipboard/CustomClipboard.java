@@ -33,6 +33,7 @@ public class CustomClipboard {
       if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
         try {
           result.add(contentIndex + ". " + (String) transferable.getTransferData(DataFlavor.stringFlavor));
+          contentIndex++;
         } catch (Exception e) {
           e.printStackTrace();
         }
