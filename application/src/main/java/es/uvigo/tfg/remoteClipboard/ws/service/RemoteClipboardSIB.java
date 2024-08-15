@@ -176,6 +176,17 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     return null;
   }
 
+  public void setClipboardContent(String username, int index){
+    if (username.equals(localUser.getUsername())){
+      this.localUser.selectClipboardContent(index, this.client);
+    } else{
+      int userIndex = userAlreadyExists(username);
+      if (index >= 0) {
+        this.remoteUsers.get(userIndex).selectClipboardContent(index, this.client);
+      }
+    }
+  }
+
   private int userAlreadyExists(String username){
     int userExists = -1;
     if (this.localUser.getUsername().equals(username)) {

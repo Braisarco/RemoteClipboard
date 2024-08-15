@@ -131,8 +131,16 @@ public class ConsoleApplication {
             for (String content : this.clipboard.getUserContent(username)) {
                 System.out.println("\t-" + content);
             }
+            this.showContentMenu(username);
         } else {
             System.out.println("That user does not exist :v");
         }
+    }
+
+    private void showContentMenu(String username){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Select the index of the content you want to copy.\n" +
+                "Press other key to exit");
+        this.clipboard.setClipboardContent(username, in.nextInt());
     }
 }

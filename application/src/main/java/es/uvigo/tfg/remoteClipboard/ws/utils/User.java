@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,9 @@ public class User {
 
     public List<String> getContentStr(){
         return this.clipboard.getClipboardContentString();
+    }
+    public void selectClipboardContent(int index, ClipboardOwner owner){
+        this.clipboard.selectTransferable(index, owner);
     }
 
     @Override
