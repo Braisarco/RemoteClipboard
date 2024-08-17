@@ -135,7 +135,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     int userIndex = userAlreadyExists(username);
     if (userIndex > 0){
       for (String net : nets){
-        if (this.nets.containsKey(net)){
+        if (this.nets.containsKey(net) && !this.nets.get(net).contains(username)){
           this.nets.get(net).add(username);
           this.remoteUsers.get(userIndex).addNet(net);
           userAdded = true;
