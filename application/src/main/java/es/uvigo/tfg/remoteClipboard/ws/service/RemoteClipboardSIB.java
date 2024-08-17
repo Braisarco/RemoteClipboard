@@ -76,14 +76,14 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
           } else {
             nets.remove(net);
           }
-          try {
-            if (client != null) {
-              this.client.connect(wsdl, auxiliarNets);
-              auxiliarNets.clear();
-            }
-          } catch (MalformedURLException e) {
-            e.printStackTrace();
+        }
+        try {
+          if (client != null) {
+            this.client.connect(wsdl, auxiliarNets);
+            auxiliarNets.clear();
           }
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
         }
         break;
       case -2:
