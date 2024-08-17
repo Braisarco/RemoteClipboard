@@ -6,12 +6,9 @@ import es.uvigo.tfg.remoteClipboard.ws.utils.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.ws.utils.User;
 
 import javax.jws.WebService;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -68,7 +65,7 @@ public class RemoteClipboardSIB implements RemoteClipboardSEI {
     switch (userIndex) {
       case -1:
         for (String net : nets) {
-          if (this.nets.containsKey(net)) {
+          if (this.nets.containsKey(net) && !this.nets.get(net).contains(username)) {
             auxiliarNets.add(net);
             if (!this.remoteUsers.contains(auxiliarUser)) {
               auxiliarUser.addNet(net);
