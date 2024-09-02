@@ -1,8 +1,5 @@
 package es.uvigo.tfg.remoteClipboard.ws.utils;
 
-import es.uvigo.tfg.remoteClipboard.CustomClipboard;
-import es.uvigo.tfg.remoteClipboard.CustomTransferable;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;

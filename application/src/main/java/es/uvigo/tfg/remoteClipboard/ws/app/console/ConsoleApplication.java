@@ -69,6 +69,9 @@ public class ConsoleApplication {
                         }
                     }catch(MalformedURLException e){
                         e.printStackTrace();
+                    } catch (Exception e) {
+                        System.err.println("Error trying to connect");;
+                        break;
                     }
                     break;
                 case "4":

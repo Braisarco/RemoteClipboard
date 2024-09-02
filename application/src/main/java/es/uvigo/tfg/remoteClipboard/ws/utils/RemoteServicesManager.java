@@ -1,6 +1,5 @@
 package es.uvigo.tfg.remoteClipboard.ws.utils;
 
-import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.ws.service.RemoteClipboardProxy;
 
 import java.awt.datatransfer.Transferable;

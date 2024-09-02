@@ -1,6 +1,5 @@
 package es.uvigo.tfg.remoteClipboard.ws.client;
 
-import es.uvigo.tfg.remoteClipboard.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.ws.utils.RemoteServicesManager;
 import es.uvigo.tfg.remoteClipboard.ws.utils.User;
 import es.uvigo.tfg.remoteClipboard.ws.service.RemoteClipboardProxy;

@@ -17,7 +17,6 @@
 
     <modules>
         <module>application</module>
-        <module>clipboard</module>
     </modules>
     
     <dependencyManagement>
@@ -27,6 +26,11 @@
 	            <artifactId>commons-lang3</artifactId>
 	            <version>3.12.0</version>
 	        </dependency>
+			<dependency>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+				<version>1.4.01</version>
+			</dependency>
 	        <dependency>
 	            <groupId>javax.xml.bind</groupId>
 	            <artifactId>jaxb-api</artifactId>

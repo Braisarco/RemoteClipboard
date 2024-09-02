@@ -1,6 +1,6 @@
 package es.uvigo.tfg.remoteClipboard.ws.service;
 
-import es.uvigo.tfg.remoteClipboard.CustomTransferable;
+import es.uvigo.tfg.remoteClipboard.ws.utils.CustomTransferable;
 import es.uvigo.tfg.remoteClipboard.ws.utils.User;
 
 import javax.xml.namespace.QName;

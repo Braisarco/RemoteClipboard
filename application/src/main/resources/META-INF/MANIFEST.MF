@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: es.uvigo.tfg.remoteClipboard.ws.app.MainApp
+

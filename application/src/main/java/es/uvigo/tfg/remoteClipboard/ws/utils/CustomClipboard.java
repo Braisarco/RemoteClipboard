@@ -1,4 +1,4 @@
-package es.uvigo.tfg.remoteClipboard;
+package es.uvigo.tfg.remoteClipboard.ws.utils;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
