@@ -144,6 +144,10 @@ public class ConsoleApplication {
         Scanner in = new Scanner(System.in);
         System.out.println("\n\nSelect the index of the content you want to copy.\n" +
                 "Press other key to exit");
-        this.clipboard.setClipboardContent(username, in.nextInt());
+       try{
+           this.clipboard.setClipboardContent(username, in.nextInt());
+       }catch(Exception e){
+           System.out.println("Leaving");
+       }
     }
 }
